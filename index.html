@@ -95,7 +95,7 @@
                         ชุดโต๊ะหินอ่อน Luxury
                     </button>
                     <button onclick="filterCategory('frame')" id="btn-cat-frame" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-                        ภาพกรอบรูปมงคล/อาร์ต
+                        ภาพกรอบรูปมงคล
                     </button>
                 </div>
             </div>
@@ -243,22 +243,25 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/xxxx/exec"; 
 
-        const products = [
-            // อัปเดตชื่อภาพชิ้นแรกให้แมตช์เป็น .jpg.jpg ตามจริงเพื่อแก้ไขปัญหาแคชและชื่อไฟล์ซ้อน
-            { id: 1, name: "ชุดเซ็ตแพลทินัม มินิมอล(80x140cm)", price: 5900, category: "furniture", img: "ds-new-set1.jpg.jpg" },
-            { id: 2, name: "ชุดสแตนเลสเงินทรงโมเดิร์นคูล (90x150cm)", price: 18900, category: "furniture", img: "1000020192.jpg?v=" + Date.now() },
-            { id: 3, name: "ชุดหน้าท็อปหินอ่อนทอง 10 ที่นั่ง (100x200cm)", price: 25900, category: "furniture", img: "1000020203.jpg?v=" + Date.now() },
-            { id: 4, name: "ภาพต้นไม้ทองสามมิติ นูนต่ำหรูหราอลังการ", price: 3500, category: "frame", img: "1000020377.jpg?v=" + Date.now() },
-            { id: 5, name: "ภาพอักษรอาหรับศิลปะสีทองพื้นหลังโมเดิร์นดำ", price: 2900, category: "frame", img: "1000020378.jpg?v=" + Date.now() },
-            { id: 6, name: "ภาพวิวทะเลคลื่นยักษ์ม้วนตัว พร้อมแสงตะวันเรืองรอง", price: 3200, category: "frame", img: "1000020379.jpg?v=" + Date.now() },
-            { id: 7, name: "ภาพไม้กางเขนศักดิ์สิทธิ์และผ้าแดง ท่ามกลางทิวเขาหมอก", price: 2800, category: "frame", img: "1000020380.jpg?v=" + Date.now() },
-            { id: 8, name: "ภาพเซ็ตศิลปะใบไม้สีโรสโกลด์แอนด์พิงค์รูมโมเดิร์น", price: 3100, category: "frame", img: "1000020381.jpg?v=" + Date.now() },
-            { id: 9, name: "ภาพวาดสไตล์แอฟริกันอาร์ต หญิงสาวชนเผ่าหลากสีสัน", price: 2990, category: "frame", img: "1000020382.jpg?v=" + Date.now() },
-            { id: 10, name: "ภาพดวงตะวันดวงโตลับขอบฟ้า ทิวต้นมะพร้าวริมชายหาด", price: 3400, category: "frame", img: "1000020383.jpg?v=" + Date.now() },
-            { id: 11, name: "ภาพศิลปะเงาซิลลูเอท คู่รักท่ามกลางใบไม้ร่วงและแสงเย็น", price: 2700, category: "frame", img: "1000020384.jpg?v=" + Date.now() },
-            { id: 12, name: "ภาพกวางทองแห่งโชคชะตา บนโขดหินวิเศษใต้เงาจันทร์", price: 3600, category: "frame", img: "1000020385.jpg?v=" + Date.now() },
-            { id: 13, name: "ภาพโมเสสผู้ปลดแอก ชูไม้เท้าแยกทะเลคลื่นยักษ์", price: 3300, category: "frame", img: "1000020386.jpg?v=" + Date.now() }
-        ];
+       const products = [
+    { id: 1, name: "ชุดเซ็ตแพลทินัม มินิมอล (80x140cm)", price: 5900, category: "furniture", img: "ds-new-set1.jpg.jpg" },
+    { id: 2, name: "ชุดเซ็ตเออร์เบิน ลอฟท์ ลายหินอ่อนเทา (เทาเข้ม)", price: 5900, category: "furniture", img: "ds-new-set2.jpg.jpg" },
+    { id: 3, name: "ชุดเซ็ตนอร์ดิกโคซี่ ซิลเวอร์เกรย์ (เทาอ่อน)", price: 5900, category: "furniture", img: "ds-new-set3.jpg.jpg" },
+    { id: 4, name: "ชุดเซ็ตสโนว์ไวท์ มินิมอลสไตล์ (ขาวคลีน)", price: 5900, category: "furniture", img: "ds-new-set4.jpg.jpg" },
+    { id: 5, name: "ชุดโต๊ะหินอ่อนรอยัลคริสตัล ครีมลาเต้ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set5.jpg.jpg" },
+    { id: 6, name: "ชุดโต๊ะหินอ่อนโมเดิร์นคาราเมล พรีเมียมเซ็ต (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set6.jpg.jpg" },
+    { id: 7, name: "ชุดโต๊ะหินอ่อนแกรนด์ลักชัวรี่ สีช็อคโกแลตโกลด์ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set7.jpg.jpg" },
+    { id: 8, name: "ภาพต้นไม้ทองสามมิติ นูนต่ำหรูหราอลังการ", price: 3500, category: "frame", img: "1000020377.jpg?v=" + Date.now() },
+    { id: 9, name: "ภาพอักษรอาหรับศิลปะสีทองพื้นหลังโมเดิร์นดำ", price: 2900, category: "frame", img: "1000020378.jpg?v=" + Date.now() },
+    { id: 10, name: "ภาพวิวทะเลคลื่นยักษ์ม้วนตัว พร้อมแสงตะวันเรืองรอง", price: 3200, category: "frame", img: "1000020379.jpg?v=" + Date.now() },
+    { id: 11, name: "ภาพไม้กางเขนศักดิ์สิทธิ์และผ้าแดง ท่ามกลางทิวเขาหมอก", price: 2800, category: "frame", img: "1000020380.jpg?v=" + Date.now() },
+    { id: 12, name: "ภาพเซ็ตศิลปะใบไม้สีโรสโกลด์แอนด์พิงค์รูมโมเดิร์น", price: 3100, category: "frame", img: "1000020381.jpg?v=" + Date.now() },
+    { id: 13, name: "ภาพวาดสไตล์แอฟริกันอาร์ต หญิงสาวชนเผ่าหลากสีสัน", price: 2990, category: "frame", img: "1000020382.jpg?v=" + Date.now() },
+    { id: 14, name: "ภาพดวงตะวันดวงโตลับขอบฟ้า ทิวต้นมะพร้าวริมชายหาด", price: 3400, category: "frame", img: "1000020383.jpg?v=" + Date.now() },
+    { id: 15, name: "ภาพศิลปะเงาซิลลูเอท คู่รักท่ามกลางใบไม้ร่วงและแสงเย็น", price: 2700, category: "frame", img: "1000020384.jpg?v=" + Date.now() },
+    { id: 16, name: "ภาพกวางทองแห่งโชคชะตา บนโขดหินวิเศษใต้เงาจันทร์", price: 3600, category: "frame", img: "1000020385.jpg?v=" + Date.now() },
+    { id: 17, name: "ภาพโมเสสผู้ปลดแอก ชูไม้เท้าแยกทะเลคลื่นยักษ์", price: 3300, category: "frame", img: "1000020386.jpg?v=" + Date.now() }
+];
 
         let selectedFurniture = null; let selectedFrame = null;
         let currentCategory = 'all'; let isCouponApplied = false;
