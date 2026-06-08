@@ -70,13 +70,17 @@
         </div>
     </div>
 
+    <!-- 🛠️ ปรับสัดส่วนแท็บเมนูแบ่งเป็น 3 แท็บอย่างสวยงามลงตัว -->
     <div class="max-w-md mx-auto mt-4 px-4">
-        <div class="bg-white p-1.5 rounded-2xl shadow-md border border-gray-100 flex space-x-2">
-            <button onclick="switchMainTab('shop')" id="mainTabShop" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition duration-150 cursor-pointer bg-slate-900 text-white shadow-sm">
-                🛒 ร้านค้าออนแอร์
+        <div class="bg-white p-1.5 rounded-2xl shadow-md border border-gray-100 flex space-x-1">
+            <button onclick="switchMainTab('shop')" id="mainTabShop" class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl transition duration-150 cursor-pointer bg-slate-900 text-white shadow-sm">
+                🛒 ร้านค้า
             </button>
-            <button onclick="switchMainTab('repair')" id="mainTabRepair" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition duration-150 cursor-pointer bg-transparent text-gray-500 hover:text-slate-900">
-                🛠️ แจ้งซ่อม / เคลม
+            <button onclick="switchMainTab('repair')" id="mainTabRepair" class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl transition duration-150 cursor-pointer bg-transparent text-gray-500 hover:text-slate-900">
+                🛠️ แจ้งเคลม
+            </button>
+            <button onclick="switchMainTab('tracking')" id="mainTabTracking" class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl transition duration-150 cursor-pointer bg-transparent text-gray-500 hover:text-slate-900">
+                📦 เช็กสถานะ
             </button>
         </div>
     </div>
@@ -240,6 +244,49 @@
                 </button>
             </form>
         </div>
+
+        <!-- 📦 ระบบติดตามสถานะสินค้าพรีเมียม (Tracking System) -->
+        <div id="pageTracking" class="hidden bg-white p-5 rounded-3xl shadow-xl border border-gray-100 space-y-4">
+            <div class="text-center border-b border-gray-100 pb-3">
+                <h3 class="font-bold text-lg text-slate-900">📦 บริการหลังการขาย: ตรวจสอบสถานะจัดส่ง</h3>
+                <p class="text-xs text-gray-500 mt-1">กรอกเบอร์โทรศัพท์ที่ใช้ในการสั่งซื้อ เพื่อเช็กเลขพัสดุของคุณ</p>
+            </div>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">เบอร์โทรศัพท์ที่ใช้สั่งซื้อ</label>
+                    <div class="flex space-x-2">
+                        <input type="tel" id="searchPhone" placeholder="กรอกเบอร์โทรศัพท์ 10 หลัก" class="flex-1 p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900">
+                        <button onclick="trackOrder()" id="trackBtn" class="bg-slate-900 text-white px-5 py-3 rounded-xl text-xs font-bold hover:bg-slate-800 cursor-pointer shrink-0">
+                            🔍 ค้นหา
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- ส่วนแสดงผลลัพธ์ -->
+                <div id="trackingResult" class="hidden border border-gray-100 bg-slate-50 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center space-x-2 text-emerald-600 font-bold text-xs">
+                        <span>✨</span> <span id="resName">พบข้อมูลคุณลูกค้า</span>
+                    </div>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <p><strong>🛍️ สินค้าที่สั่งซื้อ:</strong> <span id="resProduct">-</span></p>
+                        <p><strong>🚛 สถานะการจัดส่ง:</strong> <span id="resStatus" class="font-bold text-slate-900">กำลังเตรียมจัดส่ง</span></p>
+                    </div>
+                    
+                    <div id="trackingDetailBox" class="hidden pt-3 border-t border-gray-200 space-y-2">
+                        <div class="bg-white p-3 rounded-xl border border-gray-200 flex justify-between items-center">
+                            <div>
+                                <span class="text-[10px] text-gray-400 block uppercase font-bold" id="resCourier">บริษัทขนส่ง</span>
+                                <span class="text-sm font-extrabold text-slate-800 tracking-wide" id="resTrackNo">-</span>
+                            </div>
+                            <button onclick="copyTracking()" class="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg text-gray-600 font-medium">📋 ก๊อปปี้</button>
+                        </div>
+                        <p class="text-[10px] text-gray-400 text-center leading-tight">พี่สามารถนำเลขพัสดุด้านบนไปตรวจสอบความเคลื่อนไหวจากแอปพลิเคชันหรือเว็บหลักของขนส่งโดยตรงได้เลยครับ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <div id="productModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-sm">
@@ -272,7 +319,6 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiJO8PBKkpWhfQbSGFLWIg-Jhw23ASWk5wuhPINwvEa2qDMUWLeqk5D3SUbF6AokGD_Q/exec"; 
 
-        // 📦 อาร์เรย์สินค้าคงรายชื่อและชื่อไฟล์รูปภาพตามโค้ดเดิมของพี่ครบ 26 รายการ
         const products = [
             { id: 1, name: "ชุดโต๊ะอาหารหินอ่อนทรงกลมรุ่น Eternal Vortex Gold (เซ็ต 6 ที่นั่ง) (130x130cm)", price: 26900, category: "furniture", img: "ds-new-set1.jpg.jpg", desc: "• โครงสร้างขาเหล็กฉลุลวดลายเกลียวทอร์นาโดสีทองประกายสุดหรู\n• หน้าท็อปหินอ่อนแท้สังเคราะห์ทรงกลมขนาด 130x130 ซม. เช็ดทำความสะอาดง่าย\n• จัดเซ็ตคู่เก้าอี้พนักพิงทรงกลมเบาะขาว 6 ที่นั่ง หรูหราทันสมัยลงตัว" },
             { id: 2, name: "ชุดโต๊ะอาหารหินอ่อนทรงกลมรุ่น Grand Crown Rose Gold (เซ็ต 4 ที่นั่ง) (130x130cm)", price: 25900, category: "furniture", img: "ds-new-set2.jpg.jpg", desc: "• โครงขาและพนักพิงเหล็กฉลุลายหลุยส์คลาสสิกชุบสีโรสโกลด์ (Rose Gold) เงางาม\n• มอบสัมผัสที่อ่อนช้อย หรูหราระดับพระราชวังยุโรป เสริมรสนิยมให้บ้าน\n• หน้าท็อปหินอ่อนทรงกลม ขอบเรียบเนียน ปลอดภัยตามหลักฮวงจุ้ยกลมเกลียว" },
@@ -370,7 +416,6 @@
             });
         }
 
-        // 🔍 ฟังก์ชันเปิดป๊อปอัป Modal แสดงสเปกสินค้าแบบเจาะลึกรายตัวตาม ID
         function openModal(id) {
             const p = products.find(prod => prod.id === id);
             if (!p) return;
@@ -487,18 +532,103 @@
             }
         }
 
+        // 🔄 ปรับเปลี่ยนสลับหน้าจอครอบคลุม 3 แท็บ (ร้านค้า / เคลม / เช็กพัสดุ)
         function switchMainTab(tab) {
-            const pageShop = document.getElementById('pageShop'); const pageRepair = document.getElementById('pageRepair');
-            const tabShop = document.getElementById('mainTabShop'); const tabRepair = document.getElementById('mainTabRepair');
+            const pageShop = document.getElementById('pageShop'); 
+            const pageRepair = document.getElementById('pageRepair');
+            const pageTracking = document.getElementById('pageTracking');
+            
+            const tabShop = document.getElementById('mainTabShop'); 
+            const tabRepair = document.getElementById('mainTabRepair');
+            const tabTracking = document.getElementById('mainTabTracking');
+
+            // รีเซ็ตการแสดงผลของหน้าเพจทั้งหมดก่อน
+            pageShop.classList.add('hidden'); pageShop.classList.remove('block');
+            pageRepair.classList.add('hidden'); pageRepair.classList.remove('block');
+            pageTracking.classList.add('hidden'); pageTracking.classList.remove('block');
+
+            // รีเซ็ตสไตล์ปุ่มทั้งหมด
+            [tabShop, tabRepair, tabTracking].forEach(btn => {
+                btn.className = "flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-transparent text-gray-500 hover:text-slate-900 cursor-pointer";
+            });
+
+            // เปิดแสดงเพจที่เลือกและเปลี่ยนสีปุ่มไฮไลต์
             if (tab === 'shop') {
-                pageShop.classList.replace('hidden', 'block'); pageRepair.classList.replace('block', 'hidden');
-                tabShop.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
-                tabRepair.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-transparent text-gray-500 hover:text-slate-900 cursor-pointer";
-            } else {
-                pageShop.classList.replace('block', 'hidden'); pageRepair.classList.replace('hidden', 'block');
-                tabShop.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-transparent text-gray-500 hover:text-slate-900 cursor-pointer";
-                tabRepair.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
+                pageShop.classList.remove('hidden'); pageShop.classList.add('block');
+                tabShop.className = "flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
+            } else if (tab === 'repair') {
+                pageRepair.classList.remove('hidden'); pageRepair.classList.add('block');
+                tabRepair.className = "flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
+            } else if (tab === 'tracking') {
+                pageTracking.classList.remove('hidden'); pageTracking.classList.add('block');
+                tabTracking.className = "flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
             }
+        }
+
+        // 🔍 ฟังก์ชันดึงข้อมูลจาก Google Sheets (GET) เพื่อเช็กข้อมูลพัสดุของลูกค้า
+        function trackOrder() {
+            const phoneInput = document.getElementById('searchPhone').value.trim();
+            const btn = document.getElementById('trackBtn');
+            const resultBox = document.getElementById('trackingResult');
+            const detailBox = document.getElementById('trackingDetailBox');
+
+            if (!phoneInput) { alert("❌ กรุณากรอกเบอร์โทรศัพท์ด้วยครับ"); return; }
+            
+            btn.disabled = true; btn.innerText = "⏳ กำลังค้นหา...";
+            resultBox.classList.add('hidden');
+            detailBox.classList.add('hidden');
+
+            if (SCRIPT_URL.includes("xxxx")) {
+                // ระบบจำลองข้อมูลชั่วคราวกรณีที่ยังไม่ได้แก้ SCRIPT_URL
+                setTimeout(() => {
+                    btn.disabled = false; btn.innerText = "🔍 ค้นหา";
+                    resultBox.classList.remove('hidden');
+                    document.getElementById('resName').innerText = "พบข้อมูลตัวอย่างของคุณลูกค้า";
+                    document.getElementById('resProduct').innerText = "ชุดโต๊ะอาหารหินอ่อนทรงกลมรุ่น Eternal Vortex Gold";
+                    document.getElementById('resStatus').innerText = "📦 สินค้าจัดส่งเรียบร้อยแล้ว";
+                    detailBox.classList.remove('hidden');
+                    document.getElementById('resCourier').innerText = "FLASH EXPRESS";
+                    document.getElementById('resTrackNo').innerText = "TH0123456789A";
+                }, 1000);
+                return;
+            }
+
+            fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phoneInput)}`)
+            .then(res => res.json())
+            .then(res => {
+                btn.disabled = false; btn.innerText = "🔍 ค้นหา";
+                resultBox.classList.remove('hidden');
+                
+                if (res.status === "success") {
+                    document.getElementById('resName').innerText = `สวัสดีคุณ ${res.name}`;
+                    document.getElementById('resProduct').innerText = res.product;
+                    
+                    if (res.trackingNo) {
+                        document.getElementById('resStatus').innerText = "🚚 จัดส่งสินค้าแล้ว";
+                        document.getElementById('resStatus').className = "font-bold text-emerald-600";
+                        detailBox.classList.remove('hidden');
+                        document.getElementById('resCourier').innerText = res.courier ? res.courier.toUpperCase() : "บริษัทขนส่ง";
+                        document.getElementById('resTrackNo').innerText = res.trackingNo;
+                    } else {
+                        document.getElementById('resStatus').innerText = "⏳ กำลังเตรียมการจัดส่ง (แอดมินยังไม่ได้ลงเลขพัสดุ)";
+                        document.getElementById('resStatus').className = "font-bold text-amber-500";
+                    }
+                } else {
+                    document.getElementById('resName').innerText = "❌ ไม่พบข้อมูลการสั่งซื้อ";
+                    document.getElementById('resProduct').innerText = "ไม่พบเบอร์โทรศัพท์นี้ในระบบ หรือพิมพ์ผิด กรุณาเช็กอีกครั้งครับ";
+                    document.getElementById('resStatus').innerText = "-";
+                }
+            })
+            .catch(err => {
+                btn.disabled = false; btn.innerText = "🔍 ค้นหา";
+                alert("❌ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้งครับ");
+            });
+        }
+
+        function copyTracking() {
+            const trackNo = document.getElementById('resTrackNo').innerText;
+            navigator.clipboard.writeText(trackNo);
+            alert("📋 คัดลอกเลขพัสดุเรียบร้อยแล้ว!");
         }
 
         function shareApp() {
@@ -601,5 +731,3 @@
     </script>
 </body>
 </html>
-
-```
