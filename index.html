@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Premtong Collection</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Anuphan', sans-serif; scroll-behavior: smooth; }
+        .shimmer-gold { position: relative; overflow: hidden; }
+        .shimmer-gold::after {
+            content: ''; position: absolute; top: -50%; left: -60%; width: 30%; height: 200%;
+            background: linear-gradient(to right, transparent, rgba(251, 191, 36, 0.25), transparent);
+            transform: rotate(30deg); animation: shimmer 4s infinite ease-in-out;
+        }
+        @keyframes shimmer { 0% { left: -60%; } 30% { left: 140%; } 100% { left: 140%; } }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800 pb-28 min-h-screen relative">
+
+    <div class="bg-amber-500 text-slate-950 text-[11px] font-bold py-1.5 text-center px-4 animate-pulse sticky top-0 z-50 shadow-sm">
+        🔥 โปรแรงวันนี้! ใช้โค้ด "FREE" รับสิทธิ์จัดส่งฟรีทั่วประเทศ + มีบริการเก็บเงินปลายทาง (COD) ปลอดภัย 100%
+    </div>
+
+    <div id="liveOrderNotify" class="fixed bottom-24 left-4 z-50 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl shadow-2xl border border-amber-500/30 flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-500 max-w-[280px]">
+        <div class="bg-amber-500 text-slate-950 p-2 rounded-xl text-lg animate-bounce">🛍️</div>
+        <div>
+            <p id="notifyText" class="text-xs font-medium text-gray-200">คุณอัญชลี จากนนทบุรี</p>
+            <p id="notifyProduct" class="text-[10px] text-amber-400 font-bold">สั่งซื้อภาพศิลปะพรีเมียมตระการตา 🖼️</p>
+        </div>
+    </div>
+
+    <a href="#orderForm" id="floatingCart" class="fixed bottom-6 left-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition transform border border-amber-500/50">
+        <span class="text-xl">🛒</span>
+        <span id="cartBadge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950 animate-pulse">0</span>
+    </a>
+
+    <header class="shimmer-gold bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950 text-white py-5 px-4 sticky top-[30px] z-40 shadow-xl border-b border-amber-500/20">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="1000020303.png.jpg" alt="THE PREMTONG LOGO" class="h-12 w-12 object-contain bg-white rounded-full p-0.5 drop-shadow-[0_2px_8px_rgba(251,191,36,0.5)]" onerror="this.src='1000020303.png'">
+                <div class="text-left">
+                    <h1 class="text-xl font-bold tracking-wider text-amber-400 drop-shadow">THE PREMTONG COllECTION</h1>
+                    <p class="text-gray-300 text-[10px] mt-0.5 font-light">เฟอร์นิเจอร์สวย • ฮวงจุ้ยดี • ชีวิตมั่งคั่ง</p>
+                </div>
+            </div>
+            <button onclick="shareApp()" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs flex items-center space-x-1 cursor-pointer transition shrink-0 font-medium">
+                <span>🔗</span> <span>แชร์ร้าน</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="max-w-md mx-auto px-4 mt-4 grid grid-cols-2 gap-3">
+        <div class="bg-emerald-600 text-white p-3 rounded-2xl shadow-md text-center border border-emerald-500/30">
+            <p class="text-[10px] opacity-90 tracking-wider uppercase">✨ สิทธิพิเศษวันนี้</p>
+            <p class="text-xs font-bold mt-0.5">🚚 จัดส่งฟรีทั่วประเทศ</p>
+        </div>
+        <div class="bg-gradient-to-br from-amber-400 to-amber-500 text-slate-950 p-3 rounded-2xl shadow-md text-center border border-amber-300/30">
+            <p class="text-[10px] opacity-90 tracking-wider uppercase">✨ มั่นใจ ได้ของชัวร์</p>
+            <p class="text-xs font-bold mt-0.5">📦 มีเก็บเงินปลายทาง (COD)</p>
+        </div>
+    </div>
+
+    <div class="max-w-md mx-auto mt-4 px-4">
+        <div class="bg-white p-1.5 rounded-2xl shadow-md border border-gray-100 flex space-x-2">
+            <button onclick="switchMainTab('shop')" id="mainTabShop" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition duration-150 cursor-pointer bg-slate-900 text-white shadow-sm">
+                🛒 ร้านค้าออนแอร์
+            </button>
+            <button onclick="switchMainTab('repair')" id="mainTabRepair" class="flex-1 py-3 text-center text-sm font-bold rounded-xl transition duration-150 cursor-pointer bg-transparent text-gray-500 hover:text-slate-900">
+                🛠️ แจ้งซ่อม / เคลม
+            </button>
+        </div>
+    </div>
+
+    <main class="max-w-md mx-auto p-4 space-y-6">
+
+        <div id="pageShop" class="block space-y-6">
+            
+            <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-xs font-bold text-slate-500 mb-2 px-1 flex items-center">
+                    <span class="mr-1">🏷️</span> เลือกหมวดหมู่สินค้าพียม
+                </p>
+                <div class="flex space-x-1.5 overflow-x-auto pb-1 scrollbar-none">
+                    <button onclick="filterCategory('all')" id="btn-cat-all" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0">
+                        ทั้งหมด
+                    </button>
+                    <button onclick="filterCategory('furniture')" id="btn-cat-furniture" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+                        ชุดโต๊ะหินอ่อน Luxury
+                    </button>
+                    <button onclick="filterCategory('frame')" id="btn-cat-frame" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+                        ภาพกรอบรูปมงคล/อาร์ต
+                    </button>
+                </div>
+            </div>
+
+            <div id="productGrid" class="grid grid-cols-2 gap-3"></div>
+
+            <div class="bg-white p-5 rounded-3xl shadow-xl border border-gray-100 space-y-4">
+                <h3 class="text-center font-bold text-base text-slate-900 border-b border-gray-100 pb-3 flex items-center justify-center space-x-2">
+                    <span>🛒</span> <span>สรุปรายการในตะกร้า & ข้อมูลจัดส่ง</span>
+                </h3>
+                
+                <form id="orderForm" onsubmit="submitOrderForm(event)">
+                    <div class="space-y-2 text-sm bg-slate-50 p-3 rounded-xl border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <span class="text-gray-500 shrink-0">🪑 เฟอร์นิเจอร์ที่เลือก:</span> 
+                            <span id="summaryFurniture" class="font-bold text-right text-slate-800 ml-2">ยังไม่ได้เลือกสินค้า</span>
+                        </div>
+                        <div class="flex justify-between items-start border-t border-gray-200 pt-2 mt-2">
+                            <span class="text-gray-500 shrink-0">🖼️ รูปภาพที่เลือก:</span> 
+                            <span id="summaryFrame" class="font-bold text-right text-slate-800 ml-2">ยังไม่ได้เลือกสินค้า</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 mt-3">
+                        <label class="block text-[11px] font-bold text-gray-500 mb-1">🎟️ มีโค้ดส่วนลดของทางร้านไหม?</label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="couponInput" placeholder="ใส่โค้ดส่วนลดที่นี่ (เช่น BSFREE)" class="flex-1 p-2 border border-gray-300 rounded-lg text-xs uppercase focus:outline-none focus:ring-1 focus:ring-slate-900">
+                            <button type="button" onclick="applyCoupon()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-bold hover:bg-slate-800 transition cursor-pointer">ใช้โค้ด</button>
+                        </div>
+                        <p id="couponMessage" class="text-[11px] font-semibold mt-1 hidden"></p>
+                    </div>
+
+                    <div class="bg-slate-900 text-white p-4 rounded-xl my-4 flex justify-between items-center shadow-lg border-l-4 border-amber-400">
+                        <div>
+                            <span class="text-xs font-medium text-slate-400 block">ยอดรวมชำระทั้งสิ้น:</span>
+                            <span id="discountText" class="text-[10px] text-amber-400 font-bold block hidden"></span>
+                        </div>
+                        <span id="totalPriceDisplay" class="text-xl font-bold text-amber-400 tracking-wide">0 บาท</span>
+                    </div>
+
+                    <div class="space-y-2 mb-4">
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">📍 ข้อมูลสถานที่จัดส่งของลูกค้า</label>
+                        <input type="text" id="name" placeholder="ชื่อ-นามสกุล ผู้รับสินค้า" class="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" required>
+                        <input type="tel" id="phone" placeholder="เบอร์โทรศัพท์ติดต่อ" class="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" required>
+                        <textarea id="address" rows="3" placeholder="บ้านเลขที่ หมู่ ซอย ถนน แขวง/ตำบล เขต/อำเภอ จังหวัด" class="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" required></textarea>
+                    </div>
+
+                    <div class="space-y-1.5 mb-4 bg-white p-3 rounded-xl border border-gray-200 shadow-sm">
+                        <label class="block text-xs font-bold text-gray-700">💳 เลือกช่องทางการชำระเงิน</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center justify-center space-x-2 p-3 border rounded-xl cursor-pointer text-xs font-bold transition duration-150 bg-sky-50 border-sky-500 text-slate-900" id="labelPayTransfer">
+                                <input type="radio" name="paymentMethod" value="โอนผ่านธนาคาร" checked onclick="togglePaymentType('transfer')" class="hidden">
+                                <span>🏦 โอนเงินผ่านธนาคาร</span>
+                            </label>
+                            <label class="flex items-center justify-center space-x-2 p-3 border rounded-xl cursor-pointer text-xs font-bold transition duration-150 bg-gray-50 border-gray-200 text-gray-600" id="labelPayCOD">
+                                <input type="radio" name="paymentMethod" value="เก็บเงินปลายทาง" onclick="togglePaymentType('cod')" class="hidden">
+                                <span>📦 เก็บเงินปลายทาง (COD)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="paymentTransferSection" class="bg-sky-50/70 p-4 rounded-2xl border border-sky-200 text-center my-4 space-y-3 shadow-inner block">
+                        <div>
+                            <span class="text-[10px] text-sky-800 block font-bold tracking-wider uppercase">💰 ช่องทางชำระเงินโอนเงิน</span>
+                            <span class="font-bold text-sm block mt-0.5 text-slate-900">ธนาคารกรุงไทย (Krungthai)</span>
+                            <span class="text-xs text-gray-500 block mt-0.5">ชื่อบัญชี: นายณณชกร เปรมทอง</span>
+                        </div>
+                        
+                        <div class="flex flex-col items-center justify-center pt-2 border-t border-sky-200/60">
+                            <span class="text-[10px] text-sky-900 block mb-2 font-bold">📸 สแกนคิวอาร์โค้ดพร้อมเพย์เพื่อโอนเงินด้านล่างนี้</span>
+                            <img src="1000020304.jpg.jpg" alt="Payment QR Code" class="w-52 h-auto object-contain bg-white p-1 rounded-xl border border-gray-200 shadow-md" onerror="this.src='1000020304.jpg'">
+                        </div>
+
+                        <div class="bg-white/80 p-2.5 rounded-xl border border-sky-200 text-xs text-left text-slate-700 space-y-0.5">
+                            <p class="font-bold text-sky-800 flex items-center">⏱️ ระยะเวลาจัดส่งด่วนพิเศษ (โอนเงิน)</p>
+                            <p>• ใช้เวลาแพ็คและจัดส่งสินค้าประมาณ <span class="font-bold text-slate-900">2 - 4 วันทำการ</span></p>
+                            <p>• คาดว่าจะได้รับสินค้าประมาณวันที่: <span id="deliveryDatesTransfer" class="font-bold text-emerald-600">กำลังคำนวณ...</span></p>
+                        </div>
+
+                        <div class="mt-3 text-left bg-white p-3 rounded-xl border border-gray-200">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">📸 แนบรูปภาพหลักฐานสลิปโอนเงิน</label>
+                            <input type="file" id="slipFile" accept="image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-slate-900 file:text-white cursor-pointer">
+                        </div>
+                    </div>
+
+                    <div id="paymentCODSection" class="bg-amber-50/70 p-4 rounded-2xl border border-amber-200 text-center my-4 space-y-3 shadow-inner hidden">
+                        <div class="text-amber-900 animate-pulse text-lg">🚚</div>
+                        <h4 class="font-bold text-sm text-slate-900">เลือกบริการเก็บเงินปลายทาง (COD)</h4>
+                        <p class="text-xs text-gray-600 px-2 leading-relaxed">เมื่อสินค้าไปถึงบ้าน สามารถตรวจสอบความเรียบร้อย แล้วชำระเงินสดหรือสแกนจ่ายกับเจ้าหน้าที่ขนส่งได้โดยตรงครับ</p>
+                        
+                        <div class="bg-white/90 p-2.5 rounded-xl border border-amber-200 text-xs text-left text-slate-700 space-y-0.5 max-w-sm mx-auto">
+                            <p class="font-bold text-amber-800 flex items-center">⏱️ ระยะเวลาจัดส่งสินค้า (เก็บปลายทาง)</p>
+                            <p>• ระบบจะใช้เวลาตรวจสอบข้อมูลและจัดส่งประมาณ <span class="font-bold text-slate-900">3 - 5 วันทำการ</span></p>
+                            <p>• คาดว่าจะได้รับสินค้าประมาณวันที่: <span id="deliveryDatesCOD" class="font-bold text-amber-600">กำลังคำนวณ...</span></p>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="shimmer-gold w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition duration-200 text-sm shadow-lg cursor-pointer">
+                        🛒 ยืนยันคำสั่งซื้อ
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="pageRepair" class="hidden bg-white p-5 rounded-3xl shadow-xl border border-gray-100 space-y-4">
+            <div class="text-center border-b border-gray-100 pb-3">
+                <h3 class="font-bold text-lg text-slate-900">🛠️ ศูนย์แจ้งซ่อมและเคลมสินค้า</h3>
+                <p class="text-xs text-gray-500 mt-1">หากสินค้าชำรุด มีรอยตำหนิ หรือเสียหาย แจ้งเคลมได้ตรงนี้ครับ</p>
+            </div>
+            
+            <form id="repairForm" onsubmit="submitRepairForm(event)">
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">ชื่อ-นามสกุล ของผู้แจ้งเรื่อง</label>
+                    <input type="text" id="repairName" placeholder="กรุณาระบุชื่อที่ใช้สั่งซื้อสินค้า" class="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">เบอร์โทรศัพท์ติดต่อกลับ</label>
+                    <input type="tel" id="repairPhone" placeholder="เบอร์โทรศัพท์" class="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" required>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">ระบุสินค้าที่มีปัญหา</label>
+                    <input type="text" id="repairProduct" placeholder="ตัวอย่าง: ภาพต้นไม้ทองสีทองกรอบแตก" class="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">รายละเอียดจุดที่ชำรุดเสียหาย</label>
+                    <textarea id="repairDetail" rows="3" placeholder="ระบุอาการชำรุดเสียหายเด่นชัด..." class="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" required></textarea>
+                </div>
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">📸 แนบรูปภาพจุดเสียหายเด่นชัด</label>
+                    <input type="file" id="repairFile" accept="image/*" class="w-full text-xs text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded-full file:bg-slate-900 file:text-white cursor-pointer" required>
+                </div>
+                <button type="submit" id="repairSubmitBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 rounded-xl text-sm shadow-md cursor-pointer">
+                    🔧 ส่งเรื่องส่งเคลมเข้าฐานข้อมูลหลังบ้าน
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <div class="fixed bottom-6 right-6 z-40">
+        <a href="https://lin.ee/yiH2Hsm" target="_blank" class="bg-[#06C755] text-white font-bold p-4 rounded-full shadow-2xl flex items-center justify-center hover:bg-[#05b34c] transition duration-200">
+            <span class="text-xl mr-2">💬</span> <span class="text-xs pr-1 font-medium">แชทคุยกับแอดมิน</span>
+        </a>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/xxxx/exec"; 
+
+        const products = [
+            // ป้องกันบราวเซอร์จำแคชรูปภาพสินค้า ด้วยการใส่เครื่องหมาย ?v= คั่นท้ายรูปภาพ
+            { id: 1, name: "ชุดโต๊ะเหล็กปลายทองมินิเซ็ต (80x140cm)", price: 12900, category: "furniture", img: "1000020200.jpg?v=" + Date.now() },
+            { id: 2, name: "ชุดสแตนเลสเงินทรงโมเดิร์นคูล (90x150cm)", price: 18900, category: "furniture", img: "1000020192.jpg?v=" + Date.now() },
+            { id: 3, name: "ชุดหน้าท็อปหินอ่อนทอง 10 ที่นั่ง (100x200cm)", price: 25900, category: "furniture", img: "1000020203.jpg?v=" + Date.now() },
+            { id: 4, name: "ภาพต้นไม้ทองสามมิติ นูนต่ำหรูหราอลังการ", price: 3500, category: "frame", img: "1000020377.jpg?v=" + Date.now() },
+            { id: 5, name: "ภาพอักษรอาหรับศิลปะสีทองพื้นหลังโมเดิร์นดำ", price: 2900, category: "frame", img: "1000020378.jpg?v=" + Date.now() },
+            { id: 6, name: "ภาพวิวทะเลคลื่นยักษ์ม้วนตัว พร้อมแสงตะวันเรืองรอง", price: 3200, category: "frame", img: "1000020379.jpg?v=" + Date.now() },
+            { id: 7, name: "ภาพไม้กางเขนศักดิ์สิทธิ์และผ้าแดง ท่ามกลางทิวเขาหมอก", price: 2800, category: "frame", img: "1000020380.jpg?v=" + Date.now() },
+            { id: 8, name: "ภาพเซ็ตศิลปะใบไม้สีโรสโกลด์แอนด์พิงค์รูมโมเดิร์น", price: 3100, category: "frame", img: "1000020381.jpg?v=" + Date.now() },
+            { id: 9, name: "ภาพวาดสไตล์แอฟริกันอาร์ต หญิงสาวชนเผ่าหลากสีสัน", price: 2990, category: "frame", img: "1000020382.jpg?v=" + Date.now() },
+            { id: 10, name: "ภาพดวงตะวันดวงโตลับขอบฟ้า ทิวต้นมะพร้าวริมชายหาด", price: 3400, category: "frame", img: "1000020383.jpg?v=" + Date.now() },
+            { id: 11, name: "ภาพศิลปะเงาซิลลูเอท คู่รักท่ามกลางใบไม้ร่วงและแสงเย็น", price: 2700, category: "frame", img: "1000020384.jpg?v=" + Date.now() },
+            { id: 12, name: "ภาพกวางทองแห่งโชคชะตา บนโขดหินวิเศษใต้เงาจันทร์", price: 3600, category: "frame", img: "1000020385.jpg?v=" + Date.now() },
+            { id: 13, name: "ภาพโมเสสผู้ปลดแอก ชูไม้เท้าแยกทะเลคลื่นยักษ์", price: 3300, category: "frame", img: "1000020386.jpg?v=" + Date.now() }
+        ];
+
+        let selectedFurniture = null; let selectedFrame = null;
+        let currentCategory = 'all'; let isCouponApplied = false;
+        let activePaymentType = 'transfer';
+        let currentCalculatedPrice = 0;
+
+        const fakeOrders = [
+            { name: "คุณวิทยา จากชลบุรี", prod: "สั่งซื้อภาพต้นไม้ทองสามมิติ ✨" },
+            { name: "คุณกมลวรรณ จากเชียงใหม่", prod: "สั่งซื้อภาพกวางทองแห่งโชคชะตา 🖼️" },
+            { name: "คุณธีรเดช จากกรุงเทพฯ", prod: "สั่งซื้อชุดหน้าท็อปหินอ่อนทอง 10 ที่นั่ง 🪑" },
+            { name: "คุณพิมลพรรณ จากภูเก็ต", prod: "สั่งซื้อภาพวิวทะเลคลื่นยักษ์ม้วนตัว 🌊" }
+        ];
+
+        function showLiveNotification() {
+            const notify = document.getElementById('liveOrderNotify');
+            if(!notify) return;
+            const randomOrder = fakeOrders[Math.floor(Math.random() * fakeOrders.length)];
+            document.getElementById('notifyText').innerText = randomOrder.name;
+            document.getElementById('notifyProduct').innerText = randomOrder.prod;
+            notify.classList.remove('translate-y-20', 'opacity-0');
+            notify.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                notify.classList.remove('translate-y-0', 'opacity-100');
+                notify.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+        setInterval(showLiveNotification, 12000); setTimeout(showLiveNotification, 2000);
+
+        function calculateDeliveryDates() {
+            const options = { month: 'short', day: 'numeric', locale: 'th-TH' }; const today = new Date();
+            const minTransfer = new Date(); minTransfer.setDate(today.getDate() + 2);
+            const maxTransfer = new Date(); maxTransfer.setDate(today.getDate() + 4);
+            const formattedTransfer = `${minTransfer.toLocaleDateString('th-TH', options)} - ${maxTransfer.toLocaleDateString('th-TH', options)}`;
+            document.getElementById('deliveryDatesTransfer').innerText = formattedTransfer;
+            const minCOD = new Date(); minCOD.setDate(today.getDate() + 3);
+            const maxCOD = new Date(); maxCOD.setDate(today.getDate() + 5);
+            const formattedCOD = `${minCOD.toLocaleDateString('th-TH', options)} - ${maxCOD.toLocaleDateString('th-TH', options)}`;
+            document.getElementById('deliveryDatesCOD').innerText = formattedCOD;
+            return { transferStr: formattedTransfer, codStr: formattedCOD };
+        }
+
+        function renderProducts(filteredList) {
+            const grid = document.getElementById('productGrid'); grid.innerHTML = "";
+            filteredList.forEach(p => {
+                const isSelected = (selectedFurniture && selectedFurniture.id === p.id) || (selectedFrame && selectedFrame.id === p.id);
+                const borderClass = isSelected ? 'border-amber-500 ring-2 ring-amber-400' : 'border-gray-200';
+                const buttonText = isSelected ? '✅ เลือกแล้ว' : '➕ คลิกเพื่อเลือก';
+                const buttonColor = isSelected ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-900 text-white font-medium';
+                grid.innerHTML += `
+                    <div class="bg-white p-3 rounded-2xl shadow-sm border ${borderClass} flex flex-col justify-between group">
+                        <div>
+                            <img src="${p.img}" class="w-full h-32 object-cover rounded-xl mb-2 transition transform group-hover:scale-105" onerror="this.src='https://placehold.co/400x300?text=The+Premtong'">
+                            <div class="flex items-center space-x-1 mb-1"><span class="text-amber-400 text-[10px]">⭐⭐⭐⭐⭐</span></div>
+                            <h4 class="text-xs font-bold text-gray-800 line-clamp-2">${p.name}</h4>
+                        </div>
+                        <div class="mt-2">
+                            <p class="text-xs text-amber-600 font-extrabold">${p.price.toLocaleString()} บาท</p>
+                            <button type="button" onclick="selectProduct(${p.id})" class="w-full mt-2 ${buttonColor} text-[11px] py-2 rounded-xl cursor-pointer">
+                                ${buttonText}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectProduct(id) {
+            const product = products.find(p => p.id === id); if (!product) return;
+            if (product.category === 'frame') {
+                if (selectedFrame && selectedFrame.id === product.id) { selectedFrame = null; } else { selectedFrame = product; }
+            } else {
+                if (selectedFurniture && selectedFurniture.id === product.id) { selectedFurniture = null; } else { selectedFurniture = product; }
+            }
+            updateSummaryDisplay(); filterCategory(currentCategory);
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0";
+            });
+            document.getElementById(`btn-cat-${cat}`).className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0";
+            const filtered = (cat === 'all') ? products : products.filter(p => p.category === cat);
+            renderProducts(filtered);
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponInput').value.trim().toUpperCase();
+            const msg = document.getElementById('couponMessage');
+            if(code === 'BSFREE') {
+                isCouponApplied = true;
+                msg.className = "text-[11px] font-semibold mt-1 text-emerald-600 block"; msg.innerText = "✅ เปิดใช้งานสำเร็จ: ส่งฟรีปลายทางทั่วประเทศ!";
+            } else {
+                isCouponApplied = false; msg.className = "text-[11px] font-semibold mt-1 text-rose-500 block"; msg.innerText = "❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้วครับ";
+            }
+            updateSummaryDisplay();
+        }
+
+        function updateSummaryDisplay() {
+            let totalPrice = 0; let itemCount = 0;
+            if (selectedFurniture) {
+                document.getElementById('summaryFurniture').innerText = `${selectedFurniture.name}`; totalPrice += selectedFurniture.price; itemCount++;
+            } else { document.getElementById('summaryFurniture').innerText = "ยังไม่ได้เลือกสินค้า"; }
+            if (selectedFrame) {
+                document.getElementById('summaryFrame').innerText = `${selectedFrame.name}`; totalPrice += selectedFrame.price; itemCount++;
+            } else { document.getElementById('summaryFrame').innerText = "ยังไม่ได้เลือกสินค้า"; }
+            document.getElementById('cartBadge').innerText = itemCount;
+            const distext = document.getElementById('discountText');
+            if(isCouponApplied && totalPrice > 0) { distext.classList.remove('hidden'); distext.innerText = "🎟️ โค้ด BSFREE: ส่งฟรี"; } 
+            else { distext.classList.add('hidden'); }
+            currentCalculatedPrice = totalPrice;
+            document.getElementById('totalPriceDisplay').innerText = totalPrice.toLocaleString() + " บาท";
+        }
+
+        function togglePaymentType(type) {
+            activePaymentType = type;
+            const blockTransfer = document.getElementById('paymentTransferSection'); const blockCOD = document.getElementById('paymentCODSection');
+            const labelTransfer = document.getElementById('labelPayTransfer'); const labelCOD = document.getElementById('labelPayCOD');
+            if(type === 'transfer') {
+                blockTransfer.classList.replace('hidden', 'block'); blockCOD.classList.replace('block', 'hidden');
+                labelTransfer.className = "flex items-center justify-center space-x-2 p-3 border rounded-xl cursor-pointer text-xs font-bold transition duration-150 bg-sky-50 border-sky-500 text-slate-900";
+                labelCOD.className = "flex items-center justify-center space-x-2 p-3 border rounded-xl cursor-pointer text-xs font-bold transition duration-150 bg-gray-50 border-gray-200 text-gray-600";
+            } else {
+                blockTransfer.classList.replace('block', 'hidden'); blockCOD.classList.replace('hidden', 'block');
+                labelTransfer.className = "flex items-center justify-center space-x-2 p-3 border rounded-xl cursor-pointer text-xs font-bold transition duration-150 bg-gray-50 border-gray-200 text-gray-600";
+                labelCOD.className = "flex items-center justify-center space-x-2 p-3 border rounded-xl cursor-pointer text-xs font-bold transition duration-150 bg-amber-50 border-amber-500 text-slate-900";
+            }
+        }
+
+        function switchMainTab(tab) {
+            const pageShop = document.getElementById('pageShop'); const pageRepair = document.getElementById('pageRepair');
+            const tabShop = document.getElementById('mainTabShop'); const tabRepair = document.getElementById('mainTabRepair');
+            if (tab === 'shop') {
+                pageShop.classList.replace('hidden', 'block'); pageRepair.classList.replace('block', 'hidden');
+                tabShop.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
+                tabRepair.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-transparent text-gray-500 hover:text-slate-900 cursor-pointer";
+            } else {
+                pageShop.classList.replace('block', 'hidden'); pageRepair.classList.replace('hidden', 'block');
+                tabShop.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-transparent text-gray-500 hover:text-slate-900 cursor-pointer";
+                tabRepair.className = "flex-1 py-3 text-center text-sm font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
+            }
+        }
+
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({ title: 'The Premtong Collection', url: window.location.href }).catch(err => console.log(err));
+            } else {
+                navigator.clipboard.writeText(window.location.href); alert("📋 คัดลอกลิงก์ร้านค้าแล้ว!");
+            }
+        }
+
+        function submitOrderForm(e) {
+            e.preventDefault();
+            if (!selectedFurniture && !selectedFrame) { alert('❌ กรุณาเลือกสินค้าอย่างน้อย 1 ชิ้นก่อนส่งข้อมูลนะครับ'); return; }
+            const furnitureText = selectedFurniture ? selectedFurniture.name : "ไม่รับเฟอร์นิเจอร์";
+            const frameText = selectedFrame ? selectedFrame.name : "ไม่รับกรอบรูป";
+            const couponLog = isCouponApplied ? " | โค้ดส่วนลด: ใช้สิทธิ์ส่งฟรี" : " | โค้ดส่วนลด: ไม่ใช้";
+            const paymentMethodText = activePaymentType === 'transfer' ? "โอนผ่านธนาคารกรุงไทย" : "เก็บเงินปลายทาง (COD)";
+            const dates = calculateDeliveryDates(); const chosenDeliveryRange = activePaymentType === 'transfer' ? dates.transferStr : dates.codStr;
+
+            const orderPayload = {
+                name: document.getElementById('name').value, 
+                phone: document.getElementById('phone').value, 
+                address: document.getElementById('address').value,
+                quantity: `โต๊ะ: ${furnitureText} | รูป: ${frameText}${couponLog} | วิธีชำระ: ${paymentMethodText} | กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
+                price: currentCalculatedPrice
+            };
+
+            if (activePaymentType === 'transfer') {
+                const fileInput = document.getElementById('slipFile');
+                if (fileInput.files.length === 0) { alert('❌ ช่องทางโอนเงิน จำเป็นต้องแนบภาพสลิปหลักฐานการโอนเงินด้วยครับ'); return; }
+                executeBackendSubmissionWithFile('orderForm', 'submitBtn', orderPayload, fileInput.files[0], "🎉 บันทึกคำสั่งซื้อเรียบร้อยแล้ว! แอดมินจะตรวจสอบสลิปโอนเงินและรีบจัดส่งให้ครับ");
+            } else {
+                executeBackendSubmissionNoFile('orderForm', 'submitBtn', orderPayload, "🎉 บันทึกคำสั่งซื้อระบบเก็บเงินปลายทาง (COD) เรียบร้อยแล้ว! เตรียมรอรับสายเจ้าหน้าที่ขนส่งได้เลยครับ");
+            }
+        }
+
+        function submitRepairForm(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('repairFile');
+            if (fileInput.files.length === 0) { alert('❌ กรุณาแนบรูปภาพจุดที่เสียหายเพื่อใช้เป็นหลักฐานด้วยครับ'); return; }
+            const repairPayload = {
+                name: document.getElementById('repairName').value,
+                phone: document.getElementById('repairPhone').value,
+                address: `สินค้าที่มีปัญหา: ${document.getElementById('repairProduct').value}`,
+                quantity: `รายละเอียดเคสแจ้งซ่อม: ${document.getElementById('repairDetail').value}`,
+                price: 'เคสแจ้งซ่อม/เคลม'
+            };
+            executeBackendSubmissionWithFile('repairForm', 'repairSubmitBtn', repairPayload, fileInput.files[0], "🔧 ส่งเรื่องเคลมสินค้าเข้าสู่ระบบหลังบ้านสำเร็จ! ช่างเทคนิคจะรีบติดต่อกลับไปโดยเร็วที่สุดครับ");
+        }
+
+        function sendToGoogleSheets(bodyData, formId, btnElement, originalText, successMessage) {
+            if(SCRIPT_URL.includes("xxxx")) {
+                alert("⚠️ แจ้งผู้พัฒนา: คุณยังไม่ได้เปลี่ยนสคริปต์ SCRIPT_URL (ยังเป็นระบบจำลองข้อมูลชั่วคราว)");
+                alert(successMessage);
+                document.getElementById(formId).reset();
+                if(formId === 'orderForm') { selectedFurniture = null; selectedFrame = null; updateSummaryDisplay(); filterCategory('all'); }
+                btnElement.disabled = false; btnElement.innerText = originalText;
+                return;
+            }
+
+            fetch(SCRIPT_URL, { method: 'POST', body: bodyData })
+            .then(res => res.json())
+            .then(response => {
+                alert(successMessage);
+                document.getElementById(formId).reset();
+                if(formId === 'orderForm') { selectedFurniture = null; selectedFrame = null; updateSummaryDisplay(); filterCategory('all'); }
+            })
+            .catch(error => {
+                console.error(error);
+                alert("❌ เกิดข้อผิดพลาดทางเทคนิคในการเชื่อมต่อฐานข้อมูล กรุณาลองใหม่อีกครั้งครับ");
+            })
+            .finally(() => {
+                btnElement.disabled = false; btnElement.innerText = originalText;
+            });
+        }
+
+        function executeBackendSubmissionWithFile(formId, btnId, payload, file, successAlertMessage) {
+            const btn = document.getElementById(btnId); const originalButtonText = btn.innerText;
+            btn.disabled = true; btn.innerText = "⏳ กำลังอัปโหลดรูปภาพและบันทึกข้อมูล...";
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const formData = new URLSearchParams();
+                formData.append('name', payload.name); formData.append('phone', payload.phone); formData.append('address', payload.address);
+                formData.append('quantity', payload.quantity); formData.append('price', payload.price); formData.append('fileData', reader.result); formData.append('fileName', file.name);
+                sendToGoogleSheets(formData, formId, btn, originalButtonText, successAlertMessage);
+            };
+            if (file) { reader.readAsDataURL(file); }
+        }
+
+        function executeBackendSubmissionNoFile(formId, btnId, payload, successAlertMessage) {
+            const btn = document.getElementById(btnId); const originalButtonText = btn.innerText;
+            btn.disabled = true; btn.innerText = "⏳ กำลังบันทึกคำสั่งซื้อ...";
+            const formData = new URLSearchParams();
+            formData.append('name', payload.name); formData.append('phone', payload.phone); formData.append('address', payload.address);
+            formData.append('quantity', payload.quantity); formData.append('price', payload.price); formData.append('fileData', ''); formData.append('fileName', 'COD_No_Slip.txt');
+            sendToGoogleSheets(formData, formId, btn, originalButtonText, successAlertMessage);
+        }
+
+        filterCategory('all'); calculateDeliveryDates();
+    </script>
+</body>
+</html>
