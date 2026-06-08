@@ -323,7 +323,8 @@
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiJO8PBKkpWhfQbSGFLWIg-Jhw23ASWk5wuhPINwvEa2qDMUWLeqk5D3SUbF6AokGD_Q/exec"; 
+        // 📍 ตรงบรรทัดนี้เลยครับที่ต้องเปลี่ยน!
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_1_zOjJmw9qoBGAPe8VWp8SuhmbrvXFGuErbiMxQ63yJ1h5M2AkgrTnd-ZvKr2Qmu/exec";
 
         const products = [
             { id: 1, name: "ชุดโต๊ะอาหารหินอ่อนทรงกลมรุ่น Eternal Vortex Gold (เซ็ต 6 ที่นั่ง) (130x130cm)", price: 26900, category: "furniture", img: "ds-new-set1.jpg.jpg", desc: "• โครงสร้างขาเหล็กฉลุลวดลายเกลียวทอร์นาโดสีทองประกายสุดหรู\n• หน้าท็อปหินอ่อนแท้สังเคราะห์ทรงกลมขนาด 130x130 ซม. เช็ดทำความสะอาดง่าย\n• จัดเซ็ตคู่เก้าอี้พนักพิงทรงกลมเบาะขาว 6 ที่นั่ง หรูหราทันสมัยลงตัว" },
@@ -606,7 +607,7 @@
                     detailBox.classList.remove('hidden');
                 } else {
                     // กรณีระบุเบอร์โทรศัพท์แต่ระบบไม่พบประวัติในตาราง Google Sheets
-                    alert('❌ 不พบข้อมูลการจัดส่งของเบอร์โทรศัพท์นี้ในระบบ กรุณาตรวจสอบเบอร์อีกครั้ง หรือติดต่อแอดมินทาง LINE ครับ');
+                alert('❌ ไม่พบข้อมูลการจัดส่งของเบอร์โทรศัพท์นี้ในระบบ กรุณาตรวจสอบเบอร์อีกครั้ง หรือติดต่อแอดมินทาง LINE ครับ');
                 }
             } catch (error) {
                 console.error('Tracking Error:', error);
