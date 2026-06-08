@@ -279,9 +279,9 @@
                                 <span class="text-[10px] text-gray-400 block uppercase font-bold" id="resCourier">บริษัทขนส่ง</span>
                                 <span class="text-sm font-extrabold text-slate-800 tracking-wide" id="resTrackNo">-</span>
                             </div>
-                            <button onclick="copyTracking()" class="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg text-gray-600 font-medium">📋 ก๊อปปี้</button>
+                            <button id="copyTrackBtn" onclick="copyTracking()" class="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg text-gray-600 font-medium">📋 ก๊อปปี้</button>
                         </div>
-                        <p class="text-[10px] text-gray-400 text-center leading-tight">พี่สามารถนำเลขพัสดุด้านบนไปตรวจสอบความเคลื่อนไหวจากแอปพลิเคชันหรือเว็บหลักของขนส่งโดยตรงได้เลยครับ</p>
+                        <p id="trackingTipText" class="text-[10px] text-gray-400 text-center leading-tight">พี่สามารถนำเลขพัสดุด้านบนไปตรวจสอบความเคลื่อนไหวจากแอปพลิเคชันหรือเว็บหลักของขนส่งโดยตรงได้เลยครับ</p>
                     </div>
                 </div>
             </div>
@@ -585,10 +585,12 @@
                     resultBox.classList.remove('hidden');
                     document.getElementById('resName').innerText = "พบข้อมูลตัวอย่างของคุณลูกค้า";
                     document.getElementById('resProduct').innerText = "ชุดโต๊ะอาหารหินอ่อนทรงกลมรุ่น Eternal Vortex Gold";
-                    document.getElementById('resStatus').innerText = "📦 สินค้าจัดส่งเรียบร้อยแล้ว";
+                    document.getElementById('resStatus').innerText = "🚚 กำลังนำส่งโดยรถขนส่งของทางร้าน";
+                    document.getElementById('resStatus').className = "font-bold text-emerald-600";
                     detailBox.classList.remove('hidden');
-                    document.getElementById('resCourier').innerText = "FLASH EXPRESS";
-                    document.getElementById('resTrackNo').innerText = "TH0123456789A";
+                    document.getElementById('resCourier').innerText = "THE PREMTONG CAR";
+                    document.getElementById('resTrackNo').innerText = "จัดส่งโดยรถของทางร้าน (ไม่ต้องใช้เลขพัสดุ)";
+                    document.getElementById('trackingTipText').innerText = "ทีมงานจัดส่งจะโทรติดต่อหาพี่ก่อนเข้าไปส่งสินค้าล่วงหน้านะครับ";
                 }, 1000);
                 return;
             }
@@ -603,14 +605,26 @@
                     document.getElementById('resName').innerText = `สวัสดีคุณ ${res.name}`;
                     document.getElementById('resProduct').innerText = res.product;
                     
+                    // ปรับแต่งเงื่อนไข: ตรวจสอบว่ามีข้อมูล tracking หรือแสดงสถานะจัดส่งเอง
                     if (res.trackingNo) {
-                        document.getElementById('resStatus').innerText = "🚚 จัดส่งสินค้าแล้ว";
-                        document.getElementById('resStatus').className = "font-bold text-emerald-600";
-                        detailBox.classList.remove('hidden');
-                        document.getElementById('resCourier').innerText = res.courier ? res.courier.toUpperCase() : "บริษัทขนส่ง";
-                        document.getElementById('resTrackNo').innerText = res.trackingNo;
+                        const trackLower = res.trackingNo.toLowerCase();
+                        if (trackLower === 'ส่งเอง' || trackLower === 'รถโรงงาน' || trackLower === 'ไม่มี' || trackLower === '-') {
+                            document.getElementById('resStatus').innerText = "🚚 กำลังนำส่งโดยรถขนส่งของทางร้าน";
+                            document.getElementById('resStatus').className = "font-bold text-emerald-600";
+                            detailBox.classList.remove('hidden');
+                            document.getElementById('resCourier').innerText = "THE PREMTONG CAR";
+                            document.getElementById('resTrackNo').innerText = "จัดส่งโดยรถของทางร้าน";
+                            document.getElementById('trackingTipText').innerText = "ทีมงานจัดส่งจะโทรติดต่อหาพี่ก่อนเข้าไปส่งสินค้าล่วงหน้านะครับ";
+                        } else {
+                            document.getElementById('resStatus').innerText = "🚚 จัดส่งสินค้าแล้ว";
+                            document.getElementById('resStatus').className = "font-bold text-emerald-600";
+                            detailBox.classList.remove('hidden');
+                            document.getElementById('resCourier').innerText = res.courier ? res.courier.toUpperCase() : "บริษัทขนส่ง";
+                            document.getElementById('resTrackNo').innerText = res.trackingNo;
+                            document.getElementById('trackingTipText').innerText = "พี่สามารถนำเลขพัสดุด้านบนไปตรวจสอบความเคลื่อนไหวจากขนส่งโดยตรงได้เลยครับ";
+                        }
                     } else {
-                        document.getElementById('resStatus').innerText = "⏳ กำลังเตรียมการจัดส่ง (แอดมินยังไม่ได้ลงเลขพัสดุ)";
+                        document.getElementById('resStatus').innerText = "⏳ กำลังเตรียมการจัดส่ง (แอดมินกำลังจัดเตรียมคิวรถ)";
                         document.getElementById('resStatus').className = "font-bold text-amber-500";
                     }
                 } else {
@@ -628,7 +642,7 @@
         function copyTracking() {
             const trackNo = document.getElementById('resTrackNo').innerText;
             navigator.clipboard.writeText(trackNo);
-            alert("📋 คัดลอกเลขพัสดุเรียบร้อยแล้ว!");
+            alert("📋 คัดลอกข้อความเรียบร้อยแล้ว!");
         }
 
         function shareApp() {
@@ -652,7 +666,7 @@
                 name: document.getElementById('name').value, 
                 phone: document.getElementById('phone').value, 
                 address: document.getElementById('address').value,
-                quantity: `โต๊ะ: ${furnitureText} | รูป: ${frameText}${couponLog} | วิธีชำระ: ${paymentMethodText} | กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
+                quantity: `โต๊ะ: ${furnitureText} | รูป: ${frameText}${couponLog} | วิธีชำระ: ${paymentMethodText} | 定กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
                 price: currentCalculatedPrice
             };
 
