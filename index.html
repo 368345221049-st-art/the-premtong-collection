@@ -84,24 +84,27 @@
         <div id="pageShop" class="block space-y-6">
             
             <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
-                <p class="text-xs font-bold text-slate-500 mb-2 px-1 flex items-center">
-                    <span class="mr-1">🏷️</span> เลือกหมวดหมู่สินค้าพรีเมียม
-                </p>
-                <div class="flex space-x-1.5 overflow-x-auto pb-1 scrollbar-none">
-                    <button onclick="filterCategory('all')" id="btn-cat-all" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0">
-                        ทั้งหมด
-                    </button>
-                    <button onclick="filterCategory('furniture-cozy')" id="btn-cat-furniture-cozy" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-                        ชุดโต๊ะมินิมอล (5,900.-)
-                    </button>
-                    <button onclick="filterCategory('furniture-luxury')" id="btn-cat-furniture-luxury" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-                        ชุดโต๊ะหินอ่อน Luxury (12,900.-)
-                    </button>
-                    <button onclick="filterCategory('frame')" id="btn-cat-frame" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-                        ภาพกรอบรูปมงคล
-                    </button>
-                </div>
-            </div>
+    <p class="text-xs font-bold text-slate-500 mb-2 px-1 flex items-center">
+        <span class="mr-1">🏷️</span> เลือกหมวดหมู่สินค้าพรีเมียม
+    </p>
+    <div class="flex space-x-1.5 overflow-x-auto pb-1 scrollbar-none">
+        <button onclick="filterCategory('all')" id="btn-cat-all" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0">
+            ทั้งหมด
+        </button>
+        <button onclick="filterCategory('furniture-budget')" id="btn-cat-furniture-budget" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+            ชุดโต๊ะมินิมอล/ลอฟท์ (5,900 - 7,900.-)
+        </button>
+        <button onclick="filterCategory('furniture-cozy')" id="btn-cat-furniture-cozy" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+            ชุดโต๊ะหินอ่อน Cozy (12,900.-)
+        </button>
+        <button onclick="filterCategory('furniture-premium')" id="btn-cat-furniture-premium" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+            ชุดโต๊ะอาหาร Premium (16,900.- ขึ้นไป)
+        </button>
+        <button onclick="filterCategory('frame')" id="btn-cat-frame" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+            ภาพกรอบรูปมงคล
+        </button>
+    </div>
+</div>
 
             <div id="productGrid" class="grid grid-cols-2 gap-3"></div>
 
@@ -254,16 +257,16 @@
             { id: 5, name: "ชุดโต๊ะหินอ่อนรอยัลคริสตัล ครีมลาเต้ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set5.jpg.jpg" },
             { id: 6, name: "ชุดโต๊ะหินอ่อนโมเดิร์นคาราเมล พรีเมียมเซ็ต (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set6.jpg.jpg" },
             { id: 7, name: "ชุดโต๊ะหินอ่อนแกรนด์ลักชัวรี่ สีช็อคโกแลตโกลด์ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set7.jpg.jpg" },
-            { id: 8, name: "ภาพต้นไม้ทองสามมิติ นูนต่ำหรูหราอลังการ", price: 3500, category: "frame", img: "1000020377.jpg?v=" + Date.now() },
-            { id: 9, name: "ภาพอักษรอาหรับศิลปะสีทองพื้นหลังโมเดิร์นดำ", price: 2900, category: "frame", img: "1000020378.jpg?v=" + Date.now() },
-            { id: 10, name: "ภาพวิวทะเลคลื่นยักษ์ม้วนตัว พร้อมแสงตะวันเรืองรอง", price: 3200, category: "frame", img: "1000020379.jpg?v=" + Date.now() },
-            { id: 11, name: "ภาพไม้กางเขสศักดิ์สิทธิ์และผ้าแดง ท่ามกลางทิวเขาหมอก", price: 2800, category: "frame", img: "1000020380.jpg?v=" + Date.now() },
-            { id: 12, name: "ภาพเซ็ตศิลปะใบไม้สีโรสโกลด์แอนด์พิงค์รูมโมเดิร์น", price: 3100, category: "frame", img: "1000020381.jpg?v=" + Date.now() },
-            { id: 13, name: "ภาพวาดสไตล์แอฟริกันอาร์ต หญิงสาวชนเผ่าหลากสีสัน", price: 2990, category: "frame", img: "1000020382.jpg?v=" + Date.now() },
-            { id: 14, name: "ภาพดวงตะวันดวงโตลับขอบฟ้า ทิวต้นมะพร้าวริมชายหาด", price: 3400, category: "frame", img: "1000020383.jpg?v=" + Date.now() },
-            { id: 15, name: "ภาพศิลปะเงาซิลลูเอท คู่รักท่ามกลางใบไม้ร่วงและแสงเย็น", price: 2700, category: "frame", img: "1000020384.jpg?v=" + Date.now() },
-            { id: 16, name: "ภาพกวางทองแห่งโชคชะตา บนโขดหินวิเศษใต้เงาจันทร์", price: 3600, category: "frame", img: "1000020385.jpg?v=" + Date.now() },
-            { id: 17, name: "ภาพโมเสสผู้ปลดแอก ชูไม้เท้าแยกทะเลคลื่นยักษ์", price: 3300, category: "frame", img: "1000020386.jpg?v=" + Date.now() }
+            { id: 8, name: "ชุดโต๊ะอาหารหินอ่อนลายแกรนิตเทารุ่น Urban Stone", price: 12900, category: "furniture", img: "ds-new-set8.jpg.jpg" },
+            { id: 9, name: "ชุดโต๊ะอาหารหินอ่อนสไตล์นอร์ดิกคู่เก้าอี้โมเดิร์นรุ่น Nordic Snow ", price: 12900, category: "furniture", img: "ds-new-set9.jpg.jpg" },
+            { id: 10,name: "ชุดโต๊ะอาหารหินอ่อนสไตล์นอร์ดิกคู่เก้าอี้โมเดิร์นรุ่น Nordic Snow ท็อปขาว", price: 12900, category: "furniture", img: "ds-new-set10.jpg.jpg" },
+            { id: 11,name: "ชุดโต๊ะอาหารกระจกดำนิรภัยรุ่น Midnight Onyx", price: 16900, category: "furniture", img: "ds-new-set11.jpg.jpg" },
+            { id: 12,name: "ชุดโต๊ะกินข้าวโมเดิร์นลอฟท์ราคาสุดคุ้มรุ่น Black Cyber", price: 7900, category: "furniture", img: "ds-new-set12.jpg.jpg" },
+            { id: 13,name: "ชุดโต๊ะอาหารหลุยส์เซ็ตใหญ่ 10 ที่นั่งรุ่น Dynasty Gold", price: 25900, category: "furniture", img: "ds-new-set13.jpg.jpg" },
+            { id: 14,name: "ชุดโต๊ะอาหารหินอ่อนโมเดิร์นลักชูรี่รุ่น Imperia Gold", price: 23900, category: "furniture", img: "ds-new-set14.jpg.jpg" },
+            { id: 15,name: "ชุดโต๊ะอาหารหินอ่อนพรีเมียมรุ่น Grand Diamond", price: 17900, category: "furniture", img: "ds-new-set15.jpg.jpg" },
+            { id: 16, name: "ภาพกวางทองแห่งโชคชะตา บนโขดหินวิเศษใต้เงาจันทร์", price: 12900, category: "furniture", img: "ds-new-set7.jpg.jpg" },
+            { id: 17, name: "ภาพโมเสสผู้ปลดแอก ชูไม้เท้าแยกทะเลคลื่นยักษ์", price: 12900, category: "furniture", img: "ds-new-set7.jpg.jpg" },
         ];
 
         let selectedFurniture = null; let selectedFrame = null;
@@ -342,28 +345,32 @@
         }
 
         function filterCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0";
-            });
-            const activeBtn = document.getElementById(`btn-cat-${cat}`);
-            if (activeBtn) {
-                activeBtn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0";
-            }
-            
-            let filtered;
-            if (cat === 'all') {
-                filtered = products;
-            } else if (cat === 'furniture-cozy') {
-                filtered = products.filter(p => p.category === 'furniture' && p.price === 5900);
-            } else if (cat === 'furniture-luxury') {
-                filtered = products.filter(p => p.category === 'furniture' && p.price === 12900);
-            } else {
-                filtered = products.filter(p => p.category === cat);
-            }
-            renderProducts(filtered);
-        }
-
+    currentCategory = cat;
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0";
+    });
+    const activeBtn = document.getElementById(`btn-cat-${cat}`);
+    if (activeBtn) {
+        activeBtn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0";
+    }
+    
+    let filtered;
+    if (cat === 'all') {
+        filtered = products;
+    } else if (cat === 'furniture-budget') {
+        // กรองเฉพาะเฟอร์นิเจอร์ราคา 5,900 และ 7,900 บาท
+        filtered = products.filter(p => p.category === 'furniture' && (p.price === 5900 || p.price === 7900));
+    } else if (cat === 'furniture-cozy') {
+        // กรองเฉพาะเฟอร์นิเจอร์ราคา 12,900 บาท
+        filtered = products.filter(p => p.category === 'furniture' && p.price === 12900);
+    } else if (cat === 'furniture-premium') {
+        // กรองเฟอร์นิเจอร์ราคาตั้งแต่ 16,900 บาทขึ้นไป
+        filtered = products.filter(p => p.category === 'furniture' && p.price >= 16900);
+    } else {
+        filtered = products.filter(p => p.category === cat);
+    }
+    renderProducts(filtered);
+}
         function applyCoupon() {
             const code = document.getElementById('couponInput').value.trim().toUpperCase();
             const msg = document.getElementById('couponMessage');
