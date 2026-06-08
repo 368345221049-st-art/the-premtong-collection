@@ -70,7 +70,6 @@
         </div>
     </div>
 
-    <!-- 🛠️ ปรับสัดส่วนแท็บเมนูแบ่งเป็น 3 แท็บอย่างสวยงามลงตัว -->
     <div class="max-w-md mx-auto mt-4 px-4">
         <div class="bg-white p-1.5 rounded-2xl shadow-md border border-gray-100 flex space-x-1">
             <button onclick="switchMainTab('shop')" id="mainTabShop" class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl transition duration-150 cursor-pointer bg-slate-900 text-white shadow-sm">
@@ -245,43 +244,50 @@
             </form>
         </div>
 
-        <!-- 📦 ระบบติดตามสถานะสินค้าพรีเมียม (Tracking System) -->
         <div id="pageTracking" class="hidden bg-white p-5 rounded-3xl shadow-xl border border-gray-100 space-y-4">
             <div class="text-center border-b border-gray-100 pb-3">
-                <h3 class="font-bold text-lg text-slate-900">📦 บริการหลังการขาย: ตรวจสอบสถานะจัดส่ง</h3>
-                <p class="text-xs text-gray-500 mt-1">กรอกเบอร์โทรศัพท์ที่ใช้ในการสั่งซื้อ เพื่อเช็กเลขพัสดุของคุณ</p>
+                <h3 class="font-bold text-base text-slate-900">📦 ตรวจสอบสถานะการจัดส่งสินค้า</h3>
+                <p class="text-xs text-gray-500 mt-1">กรอกเบอร์โทรศัพท์ 10 หลักที่ใช้สั่งซื้อ เพื่อเช็กคิวรถส่งของ</p>
             </div>
             
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">เบอร์โทรศัพท์ที่ใช้สั่งซื้อ</label>
                     <div class="flex space-x-2">
-                        <input type="tel" id="searchPhone" placeholder="กรอกเบอร์โทรศัพท์ 10 หลัก" class="flex-1 p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900">
-                        <button onclick="trackOrder()" id="trackBtn" class="bg-slate-900 text-white px-5 py-3 rounded-xl text-xs font-bold hover:bg-slate-800 cursor-pointer shrink-0">
+                        <input type="tel" id="searchPhone" placeholder="กรอกเบอร์โทรศัพท์ของคุณ" class="flex-1 p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900">
+                        <button onclick="trackOrder()" id="trackBtn" class="bg-slate-900 text-white px-5 py-3 rounded-xl text-xs font-bold hover:bg-slate-800 cursor-pointer shrink-0 transition">
                             🔍 ค้นหา
                         </button>
                     </div>
                 </div>
                 
-                <!-- ส่วนแสดงผลลัพธ์ -->
-                <div id="trackingResult" class="hidden border border-gray-100 bg-slate-50 rounded-2xl p-4 space-y-3">
+                <div id="trackingResult" class="hidden border border-amber-500/20 bg-amber-50/40 rounded-2xl p-4 space-y-3 shadow-inner">
                     <div class="flex items-center space-x-2 text-emerald-600 font-bold text-xs">
-                        <span>✨</span> <span id="resName">พบข้อมูลคุณลูกค้า</span>
-                    </div>
-                    <div class="text-xs text-gray-600 space-y-1">
-                        <p><strong>🛍️ สินค้าที่สั่งซื้อ:</strong> <span id="resProduct">-</span></p>
-                        <p><strong>🚛 สถานะการจัดส่ง:</strong> <span id="resStatus" class="font-bold text-slate-900">กำลังเตรียมจัดส่ง</span></p>
+                        <span>✨</span> <span id="resName">พบข้อมูลการจัดส่งของคุณลูกค้า</span>
                     </div>
                     
-                    <div id="trackingDetailBox" class="hidden pt-3 border-t border-gray-200 space-y-2">
-                        <div class="bg-white p-3 rounded-xl border border-gray-200 flex justify-between items-center">
+                    <div class="text-xs text-gray-700 space-y-2 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                        <p><strong>🛍️ สินค้าในรายการ:</strong> <span id="resProduct" class="text-slate-900 block mt-0.5 font-medium">-</span></p>
+                        <p class="pt-1.5 border-t border-gray-100"><strong>🚛 สถานะปัจจุบัน:</strong> <span id="resStatus" class="font-extrabold text-amber-600">-</span></p>
+                    </div>
+                    
+                    <div id="trackingDetailBox" class="hidden pt-2 space-y-2">
+                        <div class="bg-slate-900 text-white p-3 rounded-xl border border-amber-500/30 flex justify-between items-center shadow-md">
                             <div>
-                                <span class="text-[10px] text-gray-400 block uppercase font-bold" id="resCourier">บริษัทขนส่ง</span>
-                                <span class="text-sm font-extrabold text-slate-800 tracking-wide" id="resTrackNo">-</span>
+                                <span class="text-[9px] text-amber-400 block uppercase font-bold tracking-wider">🚚 ผู้รับผิดชอบจัดส่ง</span>
+                                <span class="text-xs font-bold tracking-wide" id="resCourier">รถขนส่งสายตรงจากโรงงาน</span>
                             </div>
-                            <button id="copyTrackBtn" onclick="copyTracking()" class="text-xs bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg text-gray-600 font-medium">📋 ก๊อปปี้</button>
+                            <div class="text-right">
+                                <span class="text-[9px] text-gray-400 block font-bold">🎯 ข้อมูลติดต่อ</span>
+                                <span class="text-xs font-extrabold text-amber-400" id="resTrackNo">ทีมงานส่วนกลาง</span>
+                            </div>
                         </div>
-                        <p id="trackingTipText" class="text-[10px] text-gray-400 text-center leading-tight">พี่สามารถนำเลขพัสดุด้านบนไปตรวจสอบความเคลื่อนไหวจากแอปพลิเคชันหรือเว็บหลักของขนส่งโดยตรงได้เลยครับ</p>
+                        
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center">
+                            <p id="trackingTipText" class="text-[11px] text-emerald-800 font-medium leading-relaxed">
+                                💡 สินค้าจัดส่งด้วยรถของทางร้านเองโดยตรงอย่างปลอดภัย ก่อนเข้าไปส่งสินค้าจะมีเจ้าหน้าที่คนขับโทรนัดหมายเวลาล่วงหน้าก่อนครับ
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -532,7 +538,6 @@
             }
         }
 
-        // 🔄 ปรับเปลี่ยนสลับหน้าจอครอบคลุม 3 แท็บ (ร้านค้า / เคลม / เช็กพัสดุ)
         function switchMainTab(tab) {
             const pageShop = document.getElementById('pageShop'); 
             const pageRepair = document.getElementById('pageRepair');
@@ -542,17 +547,14 @@
             const tabRepair = document.getElementById('mainTabRepair');
             const tabTracking = document.getElementById('mainTabTracking');
 
-            // รีเซ็ตการแสดงผลของหน้าเพจทั้งหมดก่อน
             pageShop.classList.add('hidden'); pageShop.classList.remove('block');
             pageRepair.classList.add('hidden'); pageRepair.classList.remove('block');
             pageTracking.classList.add('hidden'); pageTracking.classList.remove('block');
 
-            // รีเซ็ตสไตล์ปุ่มทั้งหมด
             [tabShop, tabRepair, tabTracking].forEach(btn => {
                 btn.className = "flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-transparent text-gray-500 hover:text-slate-900 cursor-pointer";
             });
 
-            // เปิดแสดงเพจที่เลือกและเปลี่ยนสีปุ่มไฮไลต์
             if (tab === 'shop') {
                 pageShop.classList.remove('hidden'); pageShop.classList.add('block');
                 tabShop.className = "flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-slate-900 text-white cursor-pointer shadow-sm";
@@ -565,7 +567,7 @@
             }
         }
 
-        // 🔍 ฟังก์ชันดึงข้อมูลจาก Google Sheets (GET) เพื่อเช็กข้อมูลพัสดุของลูกค้า
+        // 🔍 ปรับแต่งฟังก์ชันค้นหาพัสดุหลังบ้านให้เหมาะกับการจัดส่งเอง
         function trackOrder() {
             const phoneInput = document.getElementById('searchPhone').value.trim();
             const btn = document.getElementById('trackBtn');
@@ -579,18 +581,18 @@
             detailBox.classList.add('hidden');
 
             if (SCRIPT_URL.includes("xxxx")) {
-                // ระบบจำลองข้อมูลชั่วคราวกรณีที่ยังไม่ได้แก้ SCRIPT_URL
+                // ระบบจำลองข้อมูลเสมือนจริงของทางร้าน เพื่อให้เห็นหน้าตาตอนระบบค้นหาเจอ
                 setTimeout(() => {
                     btn.disabled = false; btn.innerText = "🔍 ค้นหา";
                     resultBox.classList.remove('hidden');
-                    document.getElementById('resName').innerText = "พบข้อมูลตัวอย่างของคุณลูกค้า";
+                    document.getElementById('resName').innerText = "พบข้อมูลคิวรถจัดส่งของคุณลูกค้า";
                     document.getElementById('resProduct').innerText = "ชุดโต๊ะอาหารหินอ่อนทรงกลมรุ่น Eternal Vortex Gold";
-                    document.getElementById('resStatus').innerText = "🚚 กำลังนำส่งโดยรถขนส่งของทางร้าน";
-                    document.getElementById('resStatus').className = "font-bold text-emerald-600";
+                    document.getElementById('resStatus').innerText = "🚚 อยู่ระหว่างจัดเตรียมรอบรถส่งตรงจากโรงงาน";
+                    document.getElementById('resStatus').className = "font-extrabold text-amber-600";
                     detailBox.classList.remove('hidden');
-                    document.getElementById('resCourier').innerText = "THE PREMTONG CAR";
-                    document.getElementById('resTrackNo').innerText = "จัดส่งโดยรถของทางร้าน (ไม่ต้องใช้เลขพัสดุ)";
-                    document.getElementById('trackingTipText').innerText = "ทีมงานจัดส่งจะโทรติดต่อหาพี่ก่อนเข้าไปส่งสินค้าล่วงหน้านะครับ";
+                    document.getElementById('resCourier').innerText = "ทีมจัดส่ง THE PREMTONG";
+                    document.getElementById('resTrackNo').innerText = "สายด่วนโรงงาน";
+                    document.getElementById('trackingTipText').innerText = "💡 สินค้าจัดส่งด้วยรถของทางร้านเองโดยตรงอย่างปลอดภัย ก่อนเข้าไปส่งสินค้าจะมีเจ้าหน้าที่คนขับโทรนัดหมายเวลาล่วงหน้าก่อนครับ";
                 }, 1000);
                 return;
             }
@@ -605,44 +607,43 @@
                     document.getElementById('resName').innerText = `สวัสดีคุณ ${res.name}`;
                     document.getElementById('resProduct').innerText = res.product;
                     
-                    // ปรับแต่งเงื่อนไข: ตรวจสอบว่ามีข้อมูล tracking หรือแสดงสถานะจัดส่งเอง
+                    // ส่วน Logic ตรวจสอบค่าที่กรอกมาจากคอลัมน์เลขพัสดุใน Google Sheets
                     if (res.trackingNo) {
                         const trackLower = res.trackingNo.toLowerCase();
-                        if (trackLower === 'ส่งเอง' || trackLower === 'รถโรงงาน' || trackLower === 'ไม่มี' || trackLower === '-') {
-                            document.getElementById('resStatus').innerText = "🚚 กำลังนำส่งโดยรถขนส่งของทางร้าน";
-                            document.getElementById('resStatus').className = "font-bold text-emerald-600";
+                        // ถ้าแอดมินพิมพ์ว่า ส่งเอง, รถโรงงาน, กำลังส่ง หรือคำอื่นๆ 
+                        if (trackLower === 'ส่งเอง' || trackLower === 'รถโรงงาน' || trackLower === 'ไม่มี' || trackLower === '-' || trackLower === 'กำลังส่ง') {
+                            document.getElementById('resStatus').innerText = "🚚 กำลังจัดส่งโดยรถขนส่งของทางร้าน";
+                            document.getElementById('resStatus').className = "font-extrabold text-emerald-600";
                             detailBox.classList.remove('hidden');
-                            document.getElementById('resCourier').innerText = "THE PREMTONG CAR";
-                            document.getElementById('resTrackNo').innerText = "จัดส่งโดยรถของทางร้าน";
-                            document.getElementById('trackingTipText').innerText = "ทีมงานจัดส่งจะโทรติดต่อหาพี่ก่อนเข้าไปส่งสินค้าล่วงหน้านะครับ";
+                            document.getElementById('resCourier').innerText = "รถขนส่งสายตรงจากโรงงาน";
+                            document.getElementById('resTrackNo').innerText = res.courier ? res.courier : "ทีมงานส่วนกลาง";
                         } else {
-                            document.getElementById('resStatus').innerText = "🚚 จัดส่งสินค้าแล้ว";
-                            document.getElementById('resStatus').className = "font-bold text-emerald-600";
+                            // หากกรณีแอดมินใส่เบอร์โทรคนขับลงไปในช่องเลขพัสดุ หรือใส่สถานะนัดหมายเฉพาะ
+                            document.getElementById('resStatus').innerText = "🚚 รถกำลังเดินทางนำส่งสินค้า";
+                            document.getElementById('resStatus').className = "font-extrabold text-emerald-600";
                             detailBox.classList.remove('hidden');
-                            document.getElementById('resCourier').innerText = res.courier ? res.courier.toUpperCase() : "บริษัทขนส่ง";
-                            document.getElementById('resTrackNo').innerText = res.trackingNo;
-                            document.getElementById('trackingTipText').innerText = "พี่สามารถนำเลขพัสดุด้านบนไปตรวจสอบความเคลื่อนไหวจากขนส่งโดยตรงได้เลยครับ";
+                            document.getElementById('resCourier').innerText = res.courier ? res.courier : "คนขับรถของทางร้าน";
+                            document.getElementById('resTrackNo').innerText = res.trackingNo; // แสดงข้อมูลคนขับหรือข้อความนัดหมาย
                         }
                     } else {
-                        document.getElementById('resStatus').innerText = "⏳ กำลังเตรียมการจัดส่ง (แอดมินกำลังจัดเตรียมคิวรถ)";
-                        document.getElementById('resStatus').className = "font-bold text-amber-500";
+                        // กรณีเจอชื่อแต่แอดมินยังไม่ได้กรอกอะไรในช่องพัสดุเลย
+                        document.getElementById('resStatus').innerText = "⏳ กำลังจัดเตรียมสินค้า (รอแอดมินลงคิวจัดรอบรถ)";
+                        document.getElementById('resStatus').className = "font-extrabold text-amber-500";
+                        detailBox.classList.remove('hidden');
+                        document.getElementById('resCourier').innerText = "รอจัดสรรรอบรถ";
+                        document.getElementById('resTrackNo').innerText = "รออัปเดตข้อมูล";
                     }
                 } else {
                     document.getElementById('resName').innerText = "❌ ไม่พบข้อมูลการสั่งซื้อ";
                     document.getElementById('resProduct').innerText = "ไม่พบเบอร์โทรศัพท์นี้ในระบบ หรือพิมพ์ผิด กรุณาเช็กอีกครั้งครับ";
                     document.getElementById('resStatus').innerText = "-";
+                    document.getElementById('resStatus').className = "font-bold text-rose-500";
                 }
             })
             .catch(err => {
                 btn.disabled = false; btn.innerText = "🔍 ค้นหา";
                 alert("❌ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้งครับ");
             });
-        }
-
-        function copyTracking() {
-            const trackNo = document.getElementById('resTrackNo').innerText;
-            navigator.clipboard.writeText(trackNo);
-            alert("📋 คัดลอกข้อความเรียบร้อยแล้ว!");
         }
 
         function shareApp() {
@@ -666,7 +667,7 @@
                 name: document.getElementById('name').value, 
                 phone: document.getElementById('phone').value, 
                 address: document.getElementById('address').value,
-                quantity: `โต๊ะ: ${furnitureText} | รูป: ${frameText}${couponLog} | วิธีชำระ: ${paymentMethodText} | 定กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
+                quantity: `โต๊ะ: ${furnitureText} | รูป: ${frameText}${couponLog} | วิธีชำระ: ${paymentMethodText} | กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
                 price: currentCalculatedPrice
             };
 
