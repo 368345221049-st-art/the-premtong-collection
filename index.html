@@ -1,3 +1,12 @@
+รับทราบครับพี่! ผมเข้าใจแล้วครับ รอบนี้ผมจะ**รักษาโครงสร้างเดิม รายชื่อสินค้าทั้ง 26 รายการเดิม และชื่อไฟล์ภาพเดิม (`ds-new-set1.jpg.jpg` ถึง `ds-new-set26.jpg.jpg`) ของพี่ไว้ทั้งหมด 100% ไม่ไปยุ่งหรือสลับสับเปลี่ยนอะไรเลยครับ** สิ่งที่ผมเพิ่มเข้าไปให้ตามที่พี่สั่งคือ:
+
+1. **หน้าต่างป๊อปอัป (Modal)** ดีไซน์หรูหรา สำหรับแสดงรูปใหญ่และรายละเอียดเมื่อกดดูสินค้า
+2. เพิ่มคำว่า **"🔍 จิ้มดูสเปก"** บนรูปภาพสินค้าในหน้าแรก เพื่อให้ลูกค้าเข้าใจง่ายว่ากดคลิกเข้าไปดูได้
+3. เพิ่มตัวแปรคำอธิบายสเปกสินค้า (`desc`) เข้าไปในอาร์เรย์ `products` เดิมของพี่ โดยคงชื่อภาพและราคาเดิมไว้ทุกประการ
+
+พี่ก๊อปปี้โค้ดแก้ไขสมบูรณ์ชุดนี้ไปวางทับในไฟล์ `index.html` ได้เลยครับ:
+
+```html
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -21,6 +30,8 @@
             transform: rotate(30deg); animation: shimmer 4s infinite ease-in-out;
         }
         @keyframes shimmer { 0% { left: -60%; } 30% { left: 140%; } 100% { left: 140%; } }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-gray-800 pb-28 min-h-screen relative">
@@ -84,27 +95,27 @@
         <div id="pageShop" class="block space-y-6">
             
             <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
-    <p class="text-xs font-bold text-slate-500 mb-2 px-1 flex items-center">
-        <span class="mr-1">🏷️</span> เลือกหมวดหมู่สินค้าพรีเมียม
-    </p>
-    <div class="flex space-x-1.5 overflow-x-auto pb-1 scrollbar-none">
-        <button onclick="filterCategory('all')" id="btn-cat-all" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0">
-            ทั้งหมด
-        </button>
-        <button onclick="filterCategory('furniture-budget')" id="btn-cat-furniture-budget" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-            ชุดโต๊ะมินิมอล/ลอฟท์ (5,900 - 7,900.-)
-        </button>
-        <button onclick="filterCategory('furniture-cozy')" id="btn-cat-furniture-cozy" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-            ชุดโต๊ะหินอ่อน Cozy (12,900.-)
-        </button>
-        <button onclick="filterCategory('furniture-premium')" id="btn-cat-furniture-premium" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-            ชุดโต๊ะอาหาร Premium (16,900.- ขึ้นไป)
-        </button>
-        <button onclick="filterCategory('frame')" id="btn-cat-frame" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
-            ภาพกรอบรูปมงคล
-        </button>
-    </div>
-</div>
+                <p class="text-xs font-bold text-slate-500 mb-2 px-1 flex items-center">
+                    <span class="mr-1">🏷️</span> เลือกหมวดหมู่สินค้าพรีเมียม
+                </p>
+                <div class="flex space-x-1.5 overflow-x-auto pb-1 scrollbar-none">
+                    <button onclick="filterCategory('all')" id="btn-cat-all" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0">
+                        ทั้งหมด
+                    </button>
+                    <button onclick="filterCategory('furniture-budget')" id="btn-cat-furniture-budget" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+                        ชุดโต๊ะมินิมอล/ลอฟท์ (5,900 - 7,900.-)
+                    </button>
+                    <button onclick="filterCategory('furniture-cozy')" id="btn-cat-furniture-cozy" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+                        ชุดโต๊ะหินอ่อน Cozy (12,900.-)
+                    </button>
+                    <button onclick="filterCategory('furniture-premium')" id="btn-cat-furniture-premium" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+                        ชุดโต๊ะอาหาร Premium (16,900.- ขึ้นไป)
+                    </button>
+                    <button onclick="filterCategory('frame')" id="btn-cat-frame" class="cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0">
+                        ภาพกรอบรูปมงคล
+                    </button>
+                </div>
+            </div>
 
             <div id="productGrid" class="grid grid-cols-2 gap-3"></div>
 
@@ -240,6 +251,27 @@
         </div>
     </main>
 
+    <div id="productModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden shadow-2xl transform scale-95 transition-all duration-300 relative flex flex-col max-h-[85vh]">
+            <button onclick="closeModal()" class="absolute top-3 right-3 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold z-10 cursor-pointer hover:bg-black/70">✕</button>
+            <div class="overflow-y-auto p-5 space-y-4">
+                <img id="modalImg" src="" class="w-full h-52 object-cover rounded-2xl shadow-sm" alt="Product Image" onerror="this.src='https://placehold.co/400x300?text=The+Premtong'">
+                <div>
+                    <h3 id="modalName" class="text-base font-bold text-slate-900 leading-snug">ชื่อสินค้า</h3>
+                    <p id="modalPrice" class="text-lg font-extrabold text-amber-600 mt-1">0 บาท</p>
+                </div>
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-gray-100 space-y-2">
+                    <h4 class="text-xs font-bold text-slate-700 flex items-center">🔍 รายละเอียด & สเปกสินค้า</h4>
+                    <p id="modalDesc" class="text-xs text-gray-600 leading-relaxed whitespace-pre-line">รายละเอียดสินค้าเพิ่มเติม...</p>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50 border-t border-gray-100 grid grid-cols-2 gap-2">
+                <button id="modalSelectBtn" onclick="" class="w-full bg-slate-900 text-white text-xs font-bold py-3 rounded-xl cursor-pointer shadow-sm hover:bg-slate-800 transition">เลือก</button>
+                <button onclick="closeModal()" class="w-full bg-gray-200 text-gray-700 text-xs font-bold py-3 rounded-xl cursor-pointer hover:bg-gray-300 transition">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
     <div class="fixed bottom-6 right-6 z-40">
         <a href="https://line.me/ti/p/paqBnQpwZD" target="_blank" class="bg-[#06C755] text-white font-bold p-4 rounded-full shadow-2xl flex items-center justify-center hover:bg-[#05b34c] transition duration-200">
             <span class="text-xl mr-2">💬</span> <span class="text-xs pr-1 font-medium">แชทคุยกับแอดมิน</span>
@@ -249,33 +281,34 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiJO8PBKkpWhfQbSGFLWIg-Jhw23ASWk5wuhPINwvEa2qDMUWLeqk5D3SUbF6AokGD_Q/exec"; 
 
+        // 📦 อาร์เรย์สินค้าคงรายชื่อและชื่อไฟล์รูปภาพตามโค้ดเดิมของพี่ครบ 26 รายการ
         const products = [
-            { id: 1, name: "ชุดเซ็ตแพลทินัม มินิมอล (80x140cm)", price: 5900, category: "furniture", img: "ds-new-set1.jpg.jpg" },
-            { id: 2, name: "ชุดเซ็ตเออร์เบิน ลอฟท์ ลายหินอ่อนเทา (เทาเข้ม)", price: 5900, category: "furniture", img: "ds-new-set2.jpg.jpg" },
-            { id: 3, name: "ชุดเซ็ตนอร์ดิกโคซี่ ซิลเวอร์เกรย์ (เทาอ่อน)", price: 5900, category: "furniture", img: "ds-new-set3.jpg.jpg" },
-            { id: 4, name: "ชุดเซ็ตสโนว์ไวท์ มินิมอลสไตล์ (ขาวคลีน)", price: 5900, category: "furniture", img: "ds-new-set4.jpg.jpg" },
-            { id: 5, name: "ชุดโต๊ะหินอ่อนรอยัลคริสตัล ครีมลาเต้ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set5.jpg.jpg" },
-            { id: 6, name: "ชุดโต๊ะหินอ่อนโมเดิร์นคาราเมล พรีเมียมเซ็ต (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set6.jpg.jpg" },
-            { id: 7, name: "ชุดโต๊ะหินอ่อนแกรนด์ลักชัวรี่ สีช็อคโกแลตโกลด์ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set7.jpg.jpg" },
-            { id: 8, name: "ชุดโต๊ะอาหารหินอ่อนลายแกรนิตเทารุ่น Urban Stone", price: 12900, category: "furniture", img: "ds-new-set8.jpg.jpg" },
-            { id: 9, name: "ชุดโต๊ะอาหารหินอ่อนสไตล์นอร์ดิกคู่เก้าอี้โมเดิร์นรุ่น Nordic Snow ", price: 12900, category: "furniture", img: "ds-new-set9.jpg.jpg" },
-            { id: 10,name: "ชุดโต๊ะอาหารหินอ่อนสไตล์นอร์ดิกคู่เก้าอี้โมเดิร์นรุ่น Nordic Snow ท็อปขาว", price: 12900, category: "furniture", img: "ds-new-set10.jpg.jpg" },
-            { id: 11,name: "ชุดโต๊ะอาหารกระจกดำนิรภัยรุ่น Midnight Onyx", price: 16900, category: "furniture", img: "ds-new-set11.jpg.jpg" },
-            { id: 12,name: "ชุดโต๊ะกินข้าวโมเดิร์นลอฟท์ราคาสุดคุ้มรุ่น Black Cyber", price: 7900, category: "furniture", img: "ds-new-set12.jpg.jpg" },
-            { id: 13,name: "ชุดโต๊ะอาหารหลุยส์เซ็ตใหญ่ 10 ที่นั่งรุ่น Dynasty Gold", price: 25900, category: "furniture", img: "ds-new-set13.jpg.jpg" },
-            { id: 14,name: "ชุดโต๊ะอาหารหินอ่อนโมเดิร์นลักชูรี่รุ่น Imperia Gold", price: 23900, category: "furniture", img: "ds-new-set14.jpg.jpg" },
-            { id: 15,name: "ชุดโต๊ะอาหารหินอ่อนพรีเมียมรุ่น Grand Diamond", price: 17900, category: "furniture", img: "ds-new-set15.jpg.jpg" },
-            { id: 16,name: "ชุดโต๊ะอาหารหินอ่อนพรีเมียมรุ่น Pure White Glow (ขาวออร่า คลีนสไตล์)", price: 18900, category: "furniture", img: "ds-new-set16.jpg.jpg" },
-            { id: 17,name: "ชุดโต๊ะอาหารสไตล์อินดัสเทรียลคลาสสิกรุ่น Minimal Cross White (90x150cm)", price: 17900, category: "furniture", img: "ds-new-set17.jpg.jpg" },
-            { id: 18,name: "ชุดโต๊ะอาหารหินอ่อนนอร์ดิกคู่เก้าอี้รุ่น Nordic Light Grey (90x180cm)", price: 24900, category: "furniture", img: "ds-new-set18.jpg.jpg" },
-            { id: 19,name: "ชุดโต๊ะกินข้าวสไตล์โคซี่มินิมอลรุ่น Latte Warm Cozy (130x130cm)", price: 29900, category: "furniture", img: "ds-new-set19.jpg.jpg" },
-            { id: 20,name: "ชุดโต๊ะกินข้าวทูโทนมินิมอลรุ่น Sunset Amber & Grey (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set20.jpg.jpg" },
-            { id: 21,name: "ชุดโต๊ะอาหารหินอ่อนลอฟท์สไตล์รุ่น Urban Granite Loft (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set21.jpg.jpg" },
-            { id: 22,name: "ชุดโต๊ะอาหารกระจกนิรภัยพรีเมียมรุ่น Shadow Obsidian (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set22.jpg.jpg" },
-            { id: 23,name: "ชุดโต๊ะอาหารหินอ่อนดำพรีเมียมรุ่น Imperial Black Gold (90x150cm)", price: 17900, category: "furniture", img: "ds-new-set23.jpg.jpg" },
-            { id: 24,name: "ชุดโต๊ะอาหารหินอ่อนโมเดิร์นลักชูรี่รุ่น Cross Elegance Gold (90x150cm)", price: 23900, category: "furniture", img: "ds-new-set24.jpg.jpg" },
-            { id: 25,name: "ชุดโต๊ะอาหารหินอ่อนพรีเมียมรุ่น Golden Cylinder Luxury (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set25.jpg.jpg" },
-            { id: 26,name: "ชุดโต๊ะอาหารหินอ่อนโมเดิร์นรุ่น Black Onyx & Ivory (ดำ-ครีมเรียบหรู) (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set26.jpg.jpg" },
+            { id: 1, name: "ชุดเซ็ตแพลทินัม มินิมอล (80x140cm)", price: 5900, category: "furniture", img: "ds-new-set1.jpg.jpg", desc: "• โต๊ะอาหารสไตล์มินิมอล หน้าท็อปเช็ดทำความสะอาดง่าย\n• โครงสร้างแข็งแรง รองรับน้ำหนักได้ดีเยี่ยม\n• มาพร้อมเก้าอี้เข้าเซ็ตนั่งสบาย โอบรับแผ่นหลังได้พอดี" },
+            { id: 2, name: "ชุดเซ็ตเออร์เบิน ลอฟท์ ลายหินอ่อนเทา (เทาเข้ม)", price: 5900, category: "furniture", img: "ds-new-set2.jpg.jpg", desc: "• ดีไซน์สไตล์ลอฟท์ทันสมัย หน้าท็อปพิมพ์ลายหินอ่อนโทนเทาเข้มสุดเท่\n• โครงขาเหล็กเคลือบสีกันสนิม แข็งแรงทนทานเป็นพิเศษ\n• เหมาะสำหรับจัดวางในห้องอาหารสไตล์โมเดิร์น" },
+            { id: 3, name: "ชุดเซ็ตนอร์ดิกโคซี่ ซิลเวอร์เกรย์ (เทาอ่อน)", price: 5900, category: "furniture", img: "ds-new-set3.jpg.jpg", desc: "• ตกแต่งด้วยโทนสีเทาอ่อนซิลเวอร์ สร้างบรรยากาศอบอุ่นในบ้าน\n• หน้าท็อปหนาพิเศษ ทนความร้อนและรอยขีดข่วนได้ดี\n• ออกแบบตามหลักสรีรศาสตร์ นั่งรับประทานอาหารได้ผ่อนคลาย" },
+            { id: 4, name: "ชุดเซ็ตสโนว์ไวท์ มินิมอลสไตล์ (ขาวคลีน)", price: 5900, category: "furniture", img: "ds-new-set4.jpg.jpg", desc: "• สีขาวคลีนสโนว์ไวท์ ช่วยเพิ่มความสว่างทำให้ห้องอาหารดูกว้างขวางขึ้น\n• พื้นผิวเคลือบกันน้ำอย่างดี ดูแลรักษาง่าย\n• เก้าอี้ขาไม้ดีไซน์โมเดิร์นนอร์ดิก สวยงามลงตัว" },
+            { id: 5, name: "ชุดโต๊ะหินอ่อนรอยัลคริสตัล ครีมลาเต้ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set5.jpg.jpg", desc: "• หน้าท็อปหินสังเคราะห์ลายหินอ่อนสีครีมลาเต้สุดหรู\n• ขอบโต๊ะตกแต่งคิ้วสแตนเลสสีทองขัดเงา เสริมฮวงจุ้ยเรียกทรัพย์\n• เก้าอี้เบาะหนานุ่มระดับพรีเมียม นั่งสบายยาวนาน" },
+            { id: 6, name: "ชุดโต๊ะหินอ่อนโมเดิร์นคาราเมล พรีเมียมเซ็ต (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set6.jpg.jpg", desc: "• ลายหินอ่อนโทนคาราเมลทองคำ สวยงามโดดเด่นมีเอกลักษณ์\n• หน้าท็อปเคลือบเงาไฮกลอส สะท้อนแสงไฟระยิบระยับหรูหรา\n• โครงสร้างเหล็กหนาพิเศษ ทนทานต่อการใช้งานหนัก" },
+            { id: 7, name: "ชุดโต๊ะหินอ่อนแกรนด์ลักชัวรี่ สีช็อคโกแลตโกลด์ (80x140cm)", price: 12900, category: "furniture", img: "ds-new-set7.jpg.jpg", desc: "• หน้าท็อปหินอ่อนสีช็อคโกแลตเข้มตัดลายเส้นสีทอง เสริมบารมี\n• มาพร้อมเก้าอี้บุผ้าเกรดนำเข้า มอบสัมผัสนุ่มนวล\n• เหมาะสำหรับบ้านเดี่ยว ทาวน์โฮม หรือห้องคอนโดระดับหรู" },
+            { id: 8, name: "ชุดโต๊ะอาหารหินอ่อนลายแกรนิตเทารุ่น Urban Stone", price: 12900, category: "furniture", img: "ds-new-set8.jpg.jpg", desc: "• ลายหินแกรนิตสีเทาคลาสสิก สวยสง่า นิ่งลึกสไตล์โมเดิร์นคลาสสิก\n• พื้นผิวทนต่อคราบสกปรก ซอส กาแฟ ไม่ซึมเข้าเนื้อหิน เช็ดออกง่าย\n• ขาเหล็กกล้าหนาพิเศษ มั่นคง ไม่โยกเยก" },
+            { id: 9, name: "ชุดโต๊ะอาหารหินอ่อนสไตล์นอร์ดิกคู่เก้าอี้โมเดิร์นรุ่น Nordic Snow ", price: 12900, category: "furniture", img: "ds-new-set9.jpg.jpg", desc: "• ดีไซน์ผสมผสานความอบอุ่นแบบนอร์ดิกและความหรูหราแบบโมเดิร์น\n• หน้าท็อปหินหนาแน่นสูง ลายหินอ่อนสีขาวสะอาดตา\n• โครงสร้างสีทองสวยงามสะดุดตา ยกระดับรสนิยมให้บ้านของคุณ" },
+            { id: 10,name: "ชุดโต๊ะอาหารหินอ่อนสไตล์นอร์ดิกคู่เก้าอี้โมเดิร์นรุ่น Nordic Snow ท็อปขาว", price: 12900, category: "furniture", img: "ds-new-set10.jpg.jpg", desc: "• หน้าท็อปหินอ่อนสีขาวออร่า คลีนสไตล์ สว่างไสวเป็นธรรมชาติ\n• จัดเซ็ตคู่เก้าอี้โมเดิร์นดีไซน์สวย นั่งสบายเป็นพิเศษ\n• ทนความร้อนสูง สามารถวางหม้อชาบูหรือจานร้อนได้สบาย" },
+            { id: 11,name: "ชุดโต๊ะอาหารกระจกดำนิรภัยรุ่น Midnight Onyx", price: 16900, category: "furniture", img: "ds-new-set11.jpg.jpg", desc: "• ท็อปกระจกนิรภัย Tempered Glass สีดำมิดไนท์ หนาและปลอดภัยสูงสุด\n• พื้นผิวกระจกสะท้อนแสงเงางามราวกับอัญมณีนิลดำ\n• โครงขาดีไซน์เฉลียงสไตล์อิตาลี หรูหราทันสมัย" },
+            { id: 12,name: "ชุดโต๊ะกินข้าวโมเดิร์นลอฟท์ราคาสุดคุ้มรุ่น Black Cyber", price: 7900, category: "furniture", img: "ds-new-set12.jpg.jpg", desc: "• หน้าท็อปโต๊ะลายหินสีดำด้านสไตล์อินดัสเทรียล เท่ ดุดัน ไม่ซ้ำใคร\n• ขาเหล็กกล่องพ่นสีฝุ่นพาวเดอร์โค้ด ทนทาน ไม่หลุดล่อนง่าย\n• ดูแลรักษาง่าย ฟังก์ชันครบครัน ในราคาสุดคุ้มค่า" },
+            { id: 13,name: "ชุดโต๊ะอาหารหลุยส์เซ็ตใหญ่ 10 ที่นั่งรุ่น Dynasty Gold", price: 25900, category: "furniture", img: "ds-new-set13.jpg.jpg", desc: "• เซ็ตแกรนด์มาสเตอร์ขนาดใหญ่พิเศษ รองรับได้สูงสุดถึง 10 ที่นั่ง\n• ดีไซน์ราชวงศ์ยุโรปคลาสสิก อ่อนช้อย หรูหราอลังการตระการตา\n• โครงโต๊ะและเก้าอี้สลักลายสไตล์หลุยส์ทำสีทองแชมเปญสวยงาม" },
+            { id: 14,name: "ชุดโต๊ะอาหารหินอ่อนโมเดิร์นลักชูรี่รุ่น Imperia Gold", price: 23900, category: "furniture", img: "ds-new-set14.jpg.jpg", desc: "• ที่สุดของความเหนือระดับด้วยท็อปหินขัดลายพรีเมียม\n• ขาโต๊ะหล่อขึ้นรูปดีไซน์ประติมากรรมสีทองโกลด์หรูหราอลังการ\n• พื้นผิวทนรอยขีดข่วนจากของมีคมได้ดีเยี่ยม ใช้งานได้ยาวนาน" },
+            { id: 15,name: "ชุดโต๊ะอาหารหินอ่อนพรีเมียมรุ่น Grand Diamond", price: 17900, category: "furniture", img: "ds-new-set15.jpg.jpg", desc: "• ท็อปหินอ่อนเกรดคัดสรร ลวดลายคมชัดสวยงามราวกับภาพศิลปะ\n• ขอบโต๊ะลบมุมอย่างดี ปลอดภัยต่อเด็กและทุกคนในบ้าน\n• เสริมพลังงานแห่งความมั่งคั่งอุดมสมบูรณ์ตามหลักฮวงจุ้ย" },
+            { id: 16,name: "ชุดโต๊ะอาหารหินอ่อนพรีเมียมรุ่น Pure White Glow (ขาวออร่า คลีนสไตล์)", price: 18900, category: "furniture", img: "ds-new-set16.jpg.jpg", desc: "• ลายหินอ่อนขาวบริสุทธิ์ สะท้อนความหรูหราแบบเรียบง่ายคลีนสไตล์\n• โครงสร้างแข็งแกร่งทนทาน รองรับงานสังสรรค์ปาร์ตี้ได้อย่างดี\n• เก้าอี้บุด้วยวัสดุคุณภาพดี นุ่มสบายตลอดมื้ออาหาร" },
+            { id: 17,name: "ชุดโต๊ะอาหารสไตล์อินดัสเทรียลคลาสสิกรุ่น Minimal Cross White (90x150cm)", price: 17900, category: "furniture", img: "ds-new-set17.jpg.jpg", desc: "• ดีไซน์โมเดิร์นลักชูรี่ ขาโต๊ะทรงกากบาทสีทองโดดเด่นตัดกับท็อปขาว\n• ขนาดกว้างขวาง 90x150 ซม. จัดวางจานชามได้เต็มพื้นที่\n• แข็งแรง ทนทาน และช่วยเพิ่มเสน่ห์ให้กับห้องอาหาร" },
+            { id: 18,name: "ชุดโต๊ะอาหารหินอ่อนนอร์ดิกคู่เก้าอี้รุ่น Nordic Light Grey (90x180cm)", price: 24900, category: "furniture", img: "ds-new-set18.jpg.jpg", desc: "• ขนาดใหญ่พิเศษ 90x180 ซม. เหมาะสำหรับครอบครัวใหญ่หรือห้องจัดเลี้ยง\n• หน้าท็อปหินอ่อนลายสวยงาม แมตช์คู่เก้าอี้สีเทาอ่อนสไตล์นอร์ดิก\n• ให้ความรู้สึกโอ่อ่า ภูมิฐาน และอบอุ่นในเวลาเดียวกัน" },
+            { id: 19,name: "ชุดโต๊ะกินข้าวสไตล์โคซี่มินิมอลรุ่น Latte Warm Cozy (130x130cm)", price: 29900, category: "furniture", img: "ds-new-set19.jpg.jpg", desc: "• ดีไซน์ทรงจัตุรัสขนาดใหญ่ 130x130 ซม. นั่งล้อมวงรับประทานอาหารได้อย่างอบอุ่น\n• โทนสีครีมลาเต้อบอุ่น ละมุนตา สวยเนียนไร้รอยต่อ\n• งานประกอบประณีตระดับไฮเอนด์ แข็งแรงทนทานเป็นเลิศ" },
+            { id: 20,name: "ชุดโต๊ะกินข้าวทูโทนมินิมอลรุ่น Sunset Amber & Grey (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set20.jpg.jpg", desc: "• การจับคู่สีทูโทน Sunset Amber และเทาหรูหราอย่างลงตัว\n• หน้าท็อปทนความร้อนสูง ผิวสัมผัสเนียนละเอียด\n• ขาเหล็กดีไซน์โมเดิร์น แข็งแกร่ง รองรับน้ำหนักได้มาก" },
+            { id: 21,name: "ชุดโต๊ะอาหารหินอ่อนลอฟท์สไตล์รุ่น Urban Granite Loft (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set21.jpg.jpg", desc: "• ลายหินแกรนิตสไตล์ลอฟท์ ดิบเท่แต่แฝงไปด้วยความหรูหราพรีเมียม\n• หน้าท็อปเคลือบกันรอยขีดข่วนและกันน้ำเกาะ 100%\n• เหมาะสำหรับผู้ที่ชื่นชอบการตกแต่งบ้านแนวลอฟท์โมเดิร์น" },
+            { id: 22,name: "ชุดโต๊ะอาหารกระจกนิรภัยพรีเมียมรุ่น Shadow Obsidian (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set22.jpg.jpg", desc: "• หน้าท็อปกระจกนิรภัยสีดำเข้มเงางาม ลึกลับน่าค้นหา\n• ทำความสะอาดคราบน้ำมันและคราบอาหารได้ง่ายดายในพริบตา\n• ขาโต๊ะเคลือบสีทองหรูประกายเงา เพิ่มความอลังการ" },
+            { id: 23,name: "ชุดโต๊ะอาหารหินอ่อนดำพรีเมียมรุ่น Imperial Black Gold (90x150cm)", price: 17900, category: "furniture", img: "ds-new-set23.jpg.jpg", desc: "• ท็อปหินอ่อนสีดำสนิทตัดลายเส้นแร่สีทอง สื่อถึงอำนาจบารมีและเงินทอง\n• ป้องกันรอยขีดข่วน ทนทานต่อแรงกระแทกได้ดีเยี่ยม\n• ยกระดับห้องอาหารให้ดูพรีเมียมราวกับร้านอาหารระดับ 5 ดาว" },
+            { id: 24,name: "ชุดโต๊ะอาหารหินอ่อนโมเดิร์นลักชูรี่รุ่น Cross Elegance Gold (90x150cm)", price: 23900, category: "furniture", img: "ds-new-set24.jpg.jpg", desc: "• งานดีไซน์ระดับมาสเตอร์พีซ โครงขาเหล็กฉลุลวดลายสีทองอร่าม\n• หน้าท็อปหินอ่อนแท้สังเคราะห์คัดเกรดพิเศษ สวยงามสะดุดตา\n• เก้าอี้เบาะนุ่มโอบรับสรีระ นั่งคุยงานหรือทานอาหารได้ยาวนาน" },
+            { id: 25,name: "ชุดโต๊ะอาหารหินอ่อนพรีเมียมรุ่น Golden Cylinder Luxury (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set25.jpg.jpg", desc: "• ขาโต๊ะทรงกระบอกสีทอง ดีไซน์อิตาลี หรูหราทันสมัยขั้นสุด\n• หน้าท็อปหินสังเคราะห์หนาแน่นสูง ไม่ซึมน้ำ ทนกรดมะนาว\n• สวย สง่างาม เป็นจุดดึงดูดสายตาที่ดีที่สุดในบ้าน" },
+            { id: 26,name: "ชุดโต๊ะอาหารหินอ่อนโมเดิร์นรุ่น Black Onyx & Ivory (ดำ-ครีมเรียบหรู) (90x150cm)", price: 21900, category: "furniture", img: "ds-new-set26.jpg.jpg", desc: "• ดีไซน์คู่สี Black Onyx และ Ivory ครีมงาช้าง เรียบหรู คลาสสิก\n• พื้นผิวสัมผัสเรียบเนียน หรูหรา ไร้รอยต่อ\n• โครงสร้างแข็งแกร่ง ทนทาน อายุการใช้งานยาวนานนับสิบปี" },
         ];
 
         let selectedFurniture = null; let selectedFrame = null;
@@ -327,8 +360,11 @@
                 const buttonColor = isSelected ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-900 text-white font-medium';
                 grid.innerHTML += `
                     <div class="bg-white p-3 rounded-2xl shadow-sm border ${borderClass} flex flex-col justify-between group">
-                        <div>
-                            <img src="${p.img}" class="w-full h-32 object-cover rounded-xl mb-2 transition transform group-hover:scale-105" onerror="this.src='https://placehold.co/400x300?text=The+Premtong'">
+                        <div onclick="openModal(${p.id})" class="cursor-pointer">
+                            <div class="relative overflow-hidden rounded-xl mb-2">
+                                <img src="${p.img}" class="w-full h-32 object-cover transition transform group-hover:scale-105" onerror="this.src='https://placehold.co/400x300?text=The+Premtong'">
+                                <div class="absolute bottom-1 right-1 bg-black/60 backdrop-blur-sm text-white text-[9px] px-1.5 py-0.5 rounded-md font-medium">🔍 จิ้มดูสเปก</div>
+                            </div>
                             <div class="flex items-center space-x-1 mb-1"><span class="text-amber-400 text-[10px]">⭐⭐⭐⭐⭐</span></div>
                             <h4 class="text-xs font-bold text-gray-800 line-clamp-2">${p.name}</h4>
                         </div>
@@ -343,6 +379,45 @@
             });
         }
 
+        // 🔍 ฟังก์ชันเปิดป๊อปอัป Modal แสดงสเปกสินค้าแบบเจาะลึกรายตัวตาม ID
+        function openModal(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+            
+            document.getElementById('modalImg').src = p.img;
+            document.getElementById('modalName').innerText = p.name;
+            document.getElementById('modalPrice').innerText = p.price.toLocaleString() + " บาท";
+            document.getElementById('modalDesc').innerText = p.desc || "สินค้าเกรดพรีเมียมจากทางร้าน โครงสร้างแข็งแรงทนทาน ดีไซน์หรูหรา สนใจสั่งซื้อสามารถคลิกเลือกสินค้าได้เลยครับ";
+            
+            const isSelected = (selectedFurniture && selectedFurniture.id === p.id) || (selectedFrame && selectedFrame.id === p.id);
+            const selectBtn = document.getElementById('modalSelectBtn');
+            if(isSelected) {
+                selectBtn.innerText = "✅ ยกเลิกการเลือก";
+                selectBtn.className = "w-full bg-amber-500 text-slate-950 text-xs font-bold py-3 rounded-xl cursor-pointer transition";
+            } else {
+                selectBtn.innerText = "🛒 เลือกสินค้าชิ้นนี้";
+                selectBtn.className = "w-full bg-emerald-600 text-white text-xs font-bold py-3 rounded-xl cursor-pointer transition";
+            }
+            selectBtn.setAttribute("onclick", `selectProductFromModal(${p.id})`);
+
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.children[0].classList.remove('scale-95');
+            modal.children[0].classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.children[0].classList.remove('scale-100');
+            modal.children[0].classList.add('scale-95');
+        }
+
+        function selectProductFromModal(id) {
+            selectProduct(id);
+            closeModal();
+        }
+
         function selectProduct(id) {
             const product = products.find(p => p.id === id); if (!product) return;
             if (product.category === 'frame') {
@@ -354,32 +429,30 @@
         }
 
         function filterCategory(cat) {
-    currentCategory = cat;
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0";
-    });
-    const activeBtn = document.getElementById(`btn-cat-${cat}`);
-    if (activeBtn) {
-        activeBtn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0";
-    }
-    
-    let filtered;
-    if (cat === 'all') {
-        filtered = products;
-    } else if (cat === 'furniture-budget') {
-        // กรองเฉพาะเฟอร์นิเจอร์ราคา 5,900 และ 7,900 บาท
-        filtered = products.filter(p => p.category === 'furniture' && (p.price === 5900 || p.price === 7900));
-    } else if (cat === 'furniture-cozy') {
-        // กรองเฉพาะเฟอร์นิเจอร์ราคา 12,900 บาท
-        filtered = products.filter(p => p.category === 'furniture' && p.price === 12900);
-    } else if (cat === 'furniture-premium') {
-        // กรองเฟอร์นิเจอร์ราคาตั้งแต่ 16,900 บาทขึ้นไป
-        filtered = products.filter(p => p.category === 'furniture' && p.price >= 16900);
-    } else {
-        filtered = products.filter(p => p.category === cat);
-    }
-    renderProducts(filtered);
-}
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-gray-100 text-gray-600 hover:bg-gray-200 shrink-0";
+            });
+            const activeBtn = document.getElementById(`btn-cat-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = "cat-btn px-4 py-2 text-xs font-bold rounded-full cursor-pointer bg-slate-900 text-white shadow-sm shrink-0";
+            }
+            
+            let filtered;
+            if (cat === 'all') {
+                filtered = products;
+            } else if (cat === 'furniture-budget') {
+                filtered = products.filter(p => p.category === 'furniture' && (p.price === 5900 || p.price === 7900));
+            } else if (cat === 'furniture-cozy') {
+                filtered = products.filter(p => p.category === 'furniture' && p.price === 12900);
+            } else if (cat === 'furniture-premium') {
+                filtered = products.filter(p => p.category === 'furniture' && p.price >= 16900);
+            } else {
+                filtered = products.filter(p => p.category === cat);
+            }
+            renderProducts(filtered);
+        }
+
         function applyCoupon() {
             const code = document.getElementById('couponInput').value.trim().toUpperCase();
             const msg = document.getElementById('couponMessage');
@@ -537,3 +610,5 @@
     </script>
 </body>
 </html>
+
+```
