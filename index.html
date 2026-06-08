@@ -567,35 +567,56 @@
             }
         }
 
-        // 🔍 ปรับแต่งฟังก์ชันค้นหาพัสดุหลังบ้านให้เหมาะกับการจัดส่งเอง
-        function trackOrder() {
+        // 🔍 ปรับแต่งฟังก์ชันค้นหาพัสดุหลังบ้านให้เหมาะกับการจัดส่งเอง (เชื่อมต่อ Google Sheets จริง)
+        async function trackOrder() {
             const phoneInput = document.getElementById('searchPhone').value.trim();
-            const btn = document.getElementById('trackBtn');
             const resultBox = document.getElementById('trackingResult');
             const detailBox = document.getElementById('trackingDetailBox');
-
-            if (!phoneInput) { alert("❌ กรุณากรอกเบอร์โทรศัพท์ด้วยครับ"); return; }
+            const trackBtn = document.getElementById('trackBtn');
             
-            btn.disabled = true; btn.innerText = "⏳ กำลังค้นหา...";
-            resultBox.classList.add('hidden');
-            detailBox.classList.add('hidden');
-
-            if (SCRIPT_URL.includes("xxxx")) {
-                // ระบบจำลองข้อมูลเสมือนจริงของทางร้าน เพื่อให้เห็นหน้าตาตอนระบบค้นหาเจอ
-                setTimeout(() => {
-                    btn.disabled = false; btn.innerText = "🔍 ค้นหา";
-                    resultBox.classList.remove('hidden');
-                    document.getElementById('resName').innerText = "พบข้อมูลคิวรถจัดส่งของคุณลูกค้า";
-                    document.getElementById('resProduct').innerText = "ชุดโต๊ะอาหารหินอ่อนทรงกลมรุ่น Eternal Vortex Gold";
-                    document.getElementById('resStatus').innerText = "🚚 อยู่ระหว่างจัดเตรียมรอบรถส่งตรงจากโรงงาน";
-                    document.getElementById('resStatus').className = "font-extrabold text-amber-600";
-                    detailBox.classList.remove('hidden');
-                    document.getElementById('resCourier').innerText = "ทีมจัดส่ง THE PREMTONG";
-                    document.getElementById('resTrackNo').innerText = "สายด่วนโรงงาน";
-                    document.getElementById('trackingTipText').innerText = "💡 สินค้าจัดส่งด้วยรถของทางร้านเองโดยตรงอย่างปลอดภัย ก่อนเข้าไปส่งสินค้าจะมีเจ้าหน้าที่คนขับโทรนัดหมายเวลาล่วงหน้าก่อนครับ";
-                }, 1000);
+            if (!phoneInput) {
+                alert('⚠️ กรุณากรอกเบอร์โทรศัพท์ที่ใช้ในการสั่งซื้อสินค้าครับ');
                 return;
             }
+            
+            // เปลี่ยนสถานะปุ่มเพื่อแจ้งผู้ใช้ว่ากำลังค้นหา
+            const originalBtnText = trackBtn.innerText;
+            trackBtn.disabled = true;
+            trackBtn.innerText = "⏳ กำลังค้นหา...";
+            
+            // ซ่อนกล่องผลลัพธ์เดิมก่อนเริ่มค้นหาใหม่
+            resultBox.classList.add('hidden');
+            detailBox.classList.add('hidden');
+            
+            try {
+                // ส่ง Request ไปยัง Google Apps Script API หลังบ้าน
+                const response = await fetch(`${SCRIPT_URL}?action=track&phone=${encodeURIComponent(phoneInput)}`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // นำข้อมูลที่ได้จากชีตมาแสดงในจุดต่าง ๆ บนหน้าจอ
+                    document.getElementById('resName').innerText = `✨ พบข้อมูลการจัดส่งของคุณ: คุณ${data.data.name || 'ลูกค้า'}`;
+                    document.getElementById('resProduct').innerText = data.data.product || 'ไม่มีข้อมูลสินค้า';
+                    document.getElementById('resStatus').innerText = data.data.status || 'กำลังจัดเตรียมสินค้า';
+                    document.getElementById('resCourier').innerText = data.data.courier || 'รถขนส่งสายตรงจากโรงงาน';
+                    document.getElementById('resTrackNo').innerText = data.data.trackNo || 'ทีมงานส่วนกลาง';
+                    
+                    // เปิดแสดงผลกล่องสถานะและกล่องรายละเอียดการส่งของรถโรงงาน
+                    resultBox.classList.remove('hidden');
+                    detailBox.classList.remove('hidden');
+                } else {
+                    // กรณีระบุเบอร์โทรศัพท์แต่ระบบไม่พบประวัติในตาราง Google Sheets
+                    alert('❌ 不พบข้อมูลการจัดส่งของเบอร์โทรศัพท์นี้ในระบบ กรุณาตรวจสอบเบอร์อีกครั้ง หรือติดต่อแอดมินทาง LINE ครับ');
+                }
+            } catch (error) {
+                console.error('Tracking Error:', error);
+                alert('🌐 เกิดข้อผิดพลาดในการเชื่อมต่อระบบฐานข้อมูล กรุณาลองใหม่อีกครั้งในภายหลังครับ');
+            } finally {
+                // คืนค่าปุ่มให้กลับมาทำงานกดซ้ำได้ปกติเสมอ ป้องกันปุ่มค้าง
+                trackBtn.disabled = false;
+                trackBtn.innerText = originalBtnText;
+            }
+        
 
             fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phoneInput)}`)
             .then(res => res.json())
