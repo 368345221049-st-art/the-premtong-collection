@@ -898,7 +898,7 @@
         ];
         
 
-        let selectedFurniture = null; let selectedFrame = null;
+        let cart = []; // ใช้เก็บสินค้าทั้งหมดที่เลือกเข้าตะกร้า
         let currentCategory = 'all'; let isCouponApplied = false;
         let activePaymentType = 'transfer';
         let currentCalculatedPrice = 0;
@@ -941,7 +941,7 @@
         function renderProducts(filteredList) {
             const grid = document.getElementById('productGrid'); grid.innerHTML = "";
             filteredList.forEach(p => {
-                const isSelected = (selectedFurniture && selectedFurniture.id === p.id) || (selectedFrame && selectedFrame.id === p.id);
+                const isSelected = cart.some(item => item.id === p.id);
                 const borderClass = isSelected ? 'border-amber-500 ring-2 ring-amber-400' : 'border-gray-200';
                 const buttonText = isSelected ? '✅ เลือกแล้ว' : '➕ คลิกเพื่อเลือก';
                 const buttonColor = isSelected ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-slate-900 text-white font-medium';
@@ -975,7 +975,7 @@
             document.getElementById('modalPrice').innerText = p.price.toLocaleString() + " บาท";
             document.getElementById('modalDesc').innerText = p.desc || "สินค้าเกรดพรีเมียมจากทางร้าน โครงสร้างแข็งแรงทนทาน ดีไซน์หรูหรา สนใจสั่งซื้อสามารถคลิกเลือกสินค้าได้เลยครับ";
             
-            const isSelected = (selectedFurniture && selectedFurniture.id === p.id) || (selectedFrame && selectedFrame.id === p.id);
+            const isSelected = cart.some(item => item.id === p.id);
             const selectBtn = document.getElementById('modalSelectBtn');
             if(isSelected) {
                 selectBtn.innerText = "✅ ยกเลิกการเลือก";
@@ -1004,14 +1004,17 @@
             closeModal();
         }
 
-        function selectProduct(id) {
+       function selectProduct(id) {
             const product = products.find(p => p.id === id); if (!product) return;
-            if (product.category === 'frame') {
-                if (selectedFrame && selectedFrame.id === product.id) { selectedFrame = null; } else { selectedFrame = product; }
-            } else {
-                if (selectedFurniture && selectedFurniture.id === product.id) { selectedFurniture = null; } else { selectedFurniture = product; }
-            }
-            updateSummaryDisplay(); filterCategory(currentCategory);
+            const index = cart.findIndex(item => item.id === id);
+    
+            if (index > -1) {
+                cart.splice(index, 1); // ถ้ามีอยู่แล้วให้เอาออกจากตะกร้า
+             } else {
+            cart.push(product); // ถ้ายังไม่มีให้เพิ่มเข้าตะกร้า
+        }
+    
+        updateSummaryDisplay(); filterCategory(currentCategory);
         }
 
         function filterCategory(cat) {
@@ -1054,21 +1057,34 @@
             updateSummaryDisplay();
         }
 
-        function updateSummaryDisplay() {
-            let totalPrice = 0; let itemCount = 0;
-            if (selectedFurniture) {
-                document.getElementById('summaryFurniture').innerText = `${selectedFurniture.name}`; totalPrice += selectedFurniture.price; itemCount++;
-            } else { document.getElementById('summaryFurniture').innerText = "ยังไม่ได้เลือกสินค้า"; }
-            if (selectedFrame) {
-                document.getElementById('summaryFrame').innerText = `${selectedFrame.name}`; totalPrice += selectedFrame.price; itemCount++;
-            } else { document.getElementById('summaryFrame').innerText = "ยังไม่ได้เลือกสินค้า"; }
-            document.getElementById('cartBadge').innerText = itemCount;
-            const distext = document.getElementById('discountText');
-            if(isCouponApplied && totalPrice > 0) { distext.classList.remove('hidden'); distext.innerText = "🎟️ โค้ด BSFREE: ส่งฟรี"; } 
-            else { distext.classList.add('hidden'); }
-            currentCalculatedPrice = totalPrice;
-            document.getElementById('totalPriceDisplay').innerText = totalPrice.toLocaleString() + " บาท";
-        }
+       function updateSummaryDisplay() {
+    let totalPrice = 0;
+    const summaryFurniture = document.getElementById('summaryFurniture');
+    const summaryFrame = document.getElementById('summaryFrame');
+    
+    if (cart.length > 0) {
+        // แสดงรายชื่อสินค้าทั้งหมดคั่นด้วยเครื่องหมายจุลภาค (หรือปรับ HTML ส่วนนี้ให้เป็นแบบอื่นได้ตามต้องการ)
+        const productNames = cart.map(item => `${item.name} (${item.price.toLocaleString()}.-)`).join('<br> • ');
+        summaryFurniture.innerHTML = `• ${productNames}`;
+        summaryFrame.innerText = "รวมอยู่ในรายการด้านบนแล้ว"; // หรือจะปล่อยว่างไว้
+        
+        totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+    } else {
+        summaryFurniture.innerText = "ยังไม่ได้เลือกสินค้า";
+        summaryFrame.innerText = "ยังไม่ได้เลือกสินค้า";
+    }
+    
+    document.getElementById('cartBadge').innerText = cart.length;
+    const distext = document.getElementById('discountText');
+    if(isCouponApplied && totalPrice > 0) { 
+        distext.classList.remove('hidden'); 
+        distext.innerText = "🎟️ โค้ด BSFREE: ส่งฟรี"; 
+    } else { 
+        distext.classList.add('hidden'); 
+    }
+    currentCalculatedPrice = totalPrice;
+    document.getElementById('totalPriceDisplay').innerText = totalPrice.toLocaleString() + " บาท";
+}
 
         function togglePaymentType(type) {
             activePaymentType = type;
@@ -1166,21 +1182,24 @@
         }
 
         function submitOrderForm(e) {
-            e.preventDefault();
-            if (!selectedFurniture && !selectedFrame) { alert('❌ กรุณาเลือกสินค้าอย่างน้อย 1 ชิ้นก่อนส่งข้อมูลนะครับ'); return; }
-            const furnitureText = selectedFurniture ? selectedFurniture.name : "ไม่รับเฟอร์นิเจอร์";
-            const frameText = selectedFrame ? selectedFrame.name : "ไม่รับกรอบรูป";
-            const couponLog = isCouponApplied ? " | โค้ดส่วนลด: ใช้สิทธิ์ส่งฟรี" : " | โค้ดส่วนลด: ไม่ใช้";
-            const paymentMethodText = activePaymentType === 'transfer' ? "โอนผ่านธนาคารกรุงไทย" : "เก็บเงินปลายทาง (COD)";
-            const dates = calculateDeliveryDates(); const chosenDeliveryRange = activePaymentType === 'transfer' ? dates.transferStr : dates.codStr;
+    e.preventDefault();
+    if (cart.length === 0) { alert('❌ กรุณาเลือกสินค้าอย่างน้อย 1 ชิ้นก่อนส่งข้อมูลนะครับ'); return; }
+    
+    // รวบรวมรายชื่อสินค้าทั้งหมดที่มีในตะกร้าเพื่อส่งไปในคอลัมน์ของ Google Sheets
+    const itemsText = cart.map(item => `${item.name} (${item.price} บาท)`).join(', ');
+    const couponLog = isCouponApplied ? " | โค้ดส่วนลด: ใช้สิทธิ์ส่งฟรี" : " | โค้ดส่วนลด: ไม่ใช้";
+    const paymentMethodText = activePaymentType === 'transfer' ? "โอนผ่านธนาคารกรุงไทย" : "เก็บเงินปลายทาง (COD)";
+    const dates = calculateDeliveryDates(); const chosenDeliveryRange = activePaymentType === 'transfer' ? dates.transferStr : dates.codStr;
 
-            const orderPayload = {
-                name: document.getElementById('name').value, 
-                phone: document.getElementById('phone').value, 
-                address: document.getElementById('address').value,
-                quantity: `สินค้า: ${furnitureText} | รูป: ${frameText}${couponLog} | วิธีชำระ: ${paymentMethodText} | กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
-                price: currentCalculatedPrice
-            };
+    const orderPayload = {
+        name: document.getElementById('name').value, 
+        phone: document.getElementById('phone').value, 
+        address: document.getElementById('address').value,
+        quantity: `สินค้าในตะกร้า: [ ${itemsText} ]${couponLog} | วิธีชำระ: ${paymentMethodText} | กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
+        price: currentCalculatedPrice
+    };
+    
+    // ... หลังบรรทัดนี้ไป (พวก executeBackendSubmission) ให้ปล่อยไว้เหมือนเดิมได้เลยครับ ...
 
             if (activePaymentType === 'transfer') {
                 const fileInput = document.getElementById('slipFile');
@@ -1206,30 +1225,32 @@
         }
 
         function sendToGoogleSheets(bodyData, formId, btnElement, originalText, successMessage) {
-            if(SCRIPT_URL.includes("xxxx")) {
-                alert("⚠️ แจ้งผู้พัฒนา: คุณยังไม่ได้เปลี่ยนสคริปต์ SCRIPT_URL (ยังเป็นระบบจำลองข้อมูลชั่วคราว)");
-                alert(successMessage);
-                document.getElementById(formId).reset();
-                if(formId === 'orderForm') { selectedFurniture = null; selectedFrame = null; updateSummaryDisplay(); filterCategory('all'); }
-                btnElement.disabled = false; btnElement.innerText = originalText;
-                return;
-            }
+    if(SCRIPT_URL.includes("xxxx")) {
+        alert("⚠️ แจ้งผู้พัฒนา: คุณยังไม่ได้เปลี่ยนสคริปต์ SCRIPT_URL (ยังเป็นระบบจำลองข้อมูลชั่วคราว)");
+        alert(successMessage);
+        document.getElementById(formId).reset();
+        // ✅ แก้ไขตรงนี้: เคลียร์ค่าอาร์เรย์ตะกร้าสินค้า (cart) แทนตัวแปรเก่าที่ไม่มีอยู่จริง
+        if(formId === 'orderForm') { cart = []; updateSummaryDisplay(); filterCategory('all'); }
+        btnElement.disabled = false; btnElement.innerText = originalText;
+        return;
+    }
 
-            fetch(SCRIPT_URL, { method: 'POST', body: bodyData })
-            .then(res => res.json())
-            .then(response => {
-                alert(successMessage);
-                document.getElementById(formId).reset();
-                if(formId === 'orderForm') { selectedFurniture = null; selectedFrame = null; updateSummaryDisplay(); filterCategory('all'); }
-            })
-            .catch(error => {
-                console.error(error);
-                alert("❌ เกิดข้อผิดพลาดทางเทคนิคในการเชื่อมต่อฐานข้อมูล กรุณาลองใหม่อีกครั้งครับ");
-            })
-            .finally(() => {
-                btnElement.disabled = false; btnElement.innerText = originalText;
-            });
-        }
+    fetch(SCRIPT_URL, { method: 'POST', body: bodyData })
+    .then(res => res.json())
+    .then(response => {
+        alert(successMessage);
+        document.getElementById(formId).reset();
+        // ✅ แก้ไขตรงนี้ด้วยเช่นกัน
+        if(formId === 'orderForm') { cart = []; updateSummaryDisplay(); filterCategory('all'); }
+    })
+    .catch(error => {
+        console.error(error);
+        alert("❌ เกิดข้อผิดพลาดทางเทคนิคในการเชื่อมต่อฐานข้อมูล กรุณาลองใหม่อีกครั้งครับ");
+    })
+    .finally(() => {
+        btnElement.disabled = false; btnElement.innerText = originalText;
+    });
+}
 
         function executeBackendSubmissionWithFile(formId, btnId, payload, file, successAlertMessage) {
             const btn = document.getElementById(btnId); const originalButtonText = btn.innerText;
