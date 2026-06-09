@@ -1181,34 +1181,35 @@
             }
         }
 
-        function submitOrderForm(e) {
+       function submitOrderForm(e) {
     e.preventDefault();
     if (cart.length === 0) { alert('❌ กรุณาเลือกสินค้าอย่างน้อย 1 ชิ้นก่อนส่งข้อมูลนะครับ'); return; }
     
-    // รวบรวมรายชื่อสินค้าทั้งหมดที่มีในตะกร้าเพื่อส่งไปในคอลัมน์ของ Google Sheets
-    const itemsText = cart.map(item => `${item.name} (${item.price} บาท)`).join(', ');
-    const couponLog = isCouponApplied ? " | โค้ดส่วนลด: ใช้สิทธิ์ส่งฟรี" : " | โค้ดส่วนลด: ไม่ใช้";
+    // ✅ จัดรูปแบบให้ขึ้นบรรทัดใหม่แยกเป็นข้อๆ 1, 2, 3 ใน Google Sheets
+    const itemsText = cart.map((item, idx) => `   - ชิ้นที่ ${idx + 1}: ${item.name} (${item.price.toLocaleString()} บาท)`).join('\n');
     const paymentMethodText = activePaymentType === 'transfer' ? "โอนผ่านธนาคารกรุงไทย" : "เก็บเงินปลายทาง (COD)";
-    const dates = calculateDeliveryDates(); const chosenDeliveryRange = activePaymentType === 'transfer' ? dates.transferStr : dates.codStr;
+    const dates = calculateDeliveryDates(); 
+    const chosenDeliveryRange = activePaymentType === 'transfer' ? dates.transferStr : dates.codStr;
 
+    // ✅ ปรับรูปแบบ Quantity ให้เป็นบล็อกข้อมูลอ่านง่าย แยกส่วนชัดเจน
     const orderPayload = {
         name: document.getElementById('name').value, 
         phone: document.getElementById('phone').value, 
         address: document.getElementById('address').value,
-        quantity: `สินค้าในตะกร้า: [ ${itemsText} ]${couponLog} | วิธีชำระ: ${paymentMethodText} | กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
+        quantity: `🛒 รายการสินค้าที่สั่งซื้อ:\n${itemsText}\n\n🎟️ โค้ดส่วนลด: ${isCouponApplied ? "ใช้สิทธิ์ส่งฟรี" : "ไม่ใช้"}\n💳 วิธีชำระ: ${paymentMethodText}\n🚚 กำหนดส่งประมาณ: ${chosenDeliveryRange}`,
         price: currentCalculatedPrice
     };
-    
-    // ... หลังบรรทัดนี้ไป (พวก executeBackendSubmission) ให้ปล่อยไว้เหมือนเดิมได้เลยครับ ...
 
-            if (activePaymentType === 'transfer') {
-                const fileInput = document.getElementById('slipFile');
-                if (fileInput.files.length === 0) { alert('❌ ช่องทางโอนเงิน จำเป็นต้องแนบภาพสลิปหลักฐานการโอนเงินด้วยครับ'); return; }
-                executeBackendSubmissionWithFile('orderForm', 'submitBtn', orderPayload, fileInput.files[0], "🎉 บันทึกคำสั่งซื้อเรียบร้อยแล้ว! แอดมินจะตรวจสอบสลิปโอนเงินและรีบจัดส่งให้ครับ");
-            } else {
-                executeBackendSubmissionNoFile('orderForm', 'submitBtn', orderPayload, "🎉 บันทึกคำสั่งซื้อระบบเก็บเงินปลายทาง (COD) เรียบร้อยแล้ว! เตรียมรอรับสายเจ้าหน้าที่ขนส่งได้เลยครับ");
-            }
-        }
+    const fileInput = document.getElementById('slipUpload');
+    const file = fileInput ? fileInput.files[0] : null;
+
+    if (activePaymentType === 'transfer') {
+        if (!file) { alert('❌ สำหรับการโอนเงิน กรุณาแนบสลิปเพื่อยืนยันด้วยนะครับ'); return; }
+        executeBackendSubmissionWithFile('orderForm', 'submitBtn', orderPayload, file, '🎉 บันทึกใบสั่งซื้อและตรวจสอบสลิปเรียบร้อยครับ!');
+    } else {
+        executeBackendSubmissionNoFile('orderForm', 'submitBtn', orderPayload, '🎉 บันทึกคำสั่งซื้อแบบเก็บเงินปลายทางเรียบร้อยครับ!');
+    }
+}
 
         function submitRepairForm(e) {
             e.preventDefault();
